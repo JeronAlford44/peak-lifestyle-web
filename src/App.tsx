@@ -11,6 +11,12 @@ const useStyles = makeStyles(
       padding: theme.spacing(1),
       margin: theme.spacing(1),
     },
+
+    content: {
+      color: 'red',
+      fontWeight: 'bold',
+      margin: '5rem',
+    },
   }),
   { name: 'App' }
 )
@@ -18,7 +24,12 @@ const useStyles = makeStyles(
 const App = (props: object) => {
   const classes = useStyles(props)
 
-  return <section className={classes.root}>HELLO</section>
+  return (
+    <div>
+      <div className={classes.root}>HELLO2</div>
+      <div className={classes.content}>WORLDM</div>
+    </div>
+  )
 }
 
 export default App
