@@ -76,21 +76,7 @@ const useStyles = makeStyles(
 
 const RegisterScreen = () => {
   const navigate = useNavigate()
-  useEffect(() => {
-    
-    const unsubscribe = auth.onAuthStateChanged(user => {
-     if (user) {
-       console.log('tried')
-       console.log('User detected.')
-       //WHY IS ROUTES NOT POPPING UP?
-       //WHY IS useEffect NOT WORKING?
-       navigate('./')
-       
-     } 
-   })
-   return unsubscribe
- },[navigate]);
-  
+ 
  
   interface RegisterUser {
     name: string
@@ -117,17 +103,12 @@ const handleRegister = () =>{
         console.log('Logged in with:', newUser.email);
         console.log('Welcome', newUser.displayName)
         //console.log('Phone Number:', newUser.phoneNumber)
-      })
+      }).then(()=> {navigate('/home')})
       .catch(error => alert(error.message))
     }
   }
 
-  interface RegisterUser {
-    name: string
-    email: string
-    password: string
-    retypePassword: string
-  }
+
 
   const elements = [
     ['name', 'name'],
@@ -194,7 +175,7 @@ const handleRegister = () =>{
       }}>Register</Button>
 <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent:'center'}}>
 <text>Already have an account?</text>
-<Button className = {classes.registerButton} href="/auth/login">Login</Button>
+<Button className = {classes.registerButton} href="/auth/Login">Login</Button>
 </div>
     </div>
   )

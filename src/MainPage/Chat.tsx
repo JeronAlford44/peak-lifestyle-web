@@ -97,7 +97,8 @@ const ChatScreen = () => {
     <div>
       <div className={classes.chatContainer}>
         {userInput.map(word => {
-          return <div className={classes.chatBubble}>{word}</div>
+        if (word !== ''){
+          return <div className={classes.chatBubble}>{word}</div>}
         })}
       </div>
       <div className={classes.inputBarContainer}>
