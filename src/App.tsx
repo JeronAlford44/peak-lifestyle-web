@@ -2,9 +2,9 @@ import { Routes, Route, BrowserRouter as Router } from 'react-router-dom'
 
 
 import AppContainer from './containers/AppContainer'
-import MainLayout from './containers/MainLayout'
-import BasicTable from './examples/mui/BasicTable'
-import DataGridDemo from './examples/mui/DataGridDemo'
+
+
+
 import AuthContainer from './containers/AuthContainer'
 import RegisterScreen from './auth/Register'
 import { makeStyles } from '@material-ui/core'

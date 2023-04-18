@@ -1,5 +1,10 @@
 import { Button, makeStyles } from '@material-ui/core'
 import { useState } from 'react'
+import { auth } from '../firebaseConfig'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile} from 'firebase/auth'
+import { Outlet, useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
+import { unsubscribe } from 'diagnostics_channel'
 
 // createStyles (old) vs makeStyles (new)
 // https://smartdevpreneur.com/material-ui-makestyles-usestyles-createstyles-and-withstyles-explained/
@@ -12,7 +17,7 @@ const useStyles = makeStyles(
       // justifyContent: 'center',
       // alignItems: 'center',
       margin: theme.spacing(3),
-      backgroundColor: '#F79489',
+      backgroundColor: 'white',
     },
     ButtonsContainer: {
       display: 'flex',
@@ -42,15 +47,17 @@ const useStyles = makeStyles(
       
     },
     inputBar: {
-      backgroundColor: 'white',
+      // backgroundColor: 'black',
 
-      borderRadius: '32px',
+      // borderBottomWidth: '5px',
       marginTop: 5,
       padding: '20px',
       borderColor: ''
     },
     input: {
       borderColor: 'transparent',
+      borderBottomColor: 'black',
+      borderWidth: '1px'
     },
     registerButton: {
       backgroundColor: 'white',
@@ -60,14 +67,59 @@ const useStyles = makeStyles(
       alignItems: 'center',
       marginTop: 20,
     },
+    loginButton: {
+
+    }
   }),
   { name: 'App' }
 )
 
 const RegisterScreen = () => {
-
-  const handleSignup = () => {
-    return
+  const navigate = useNavigate()
+  useEffect(() => {
+    
+    const unsubscribe = auth.onAuthStateChanged(user => {
+     if (user) {
+       console.log('tried')
+       console.log('User detected.')
+       //WHY IS ROUTES NOT POPPING UP?
+       //WHY IS useEffect NOT WORKING?
+       navigate('../')
+       
+     } 
+   })
+   return unsubscribe
+ },[navigate]);
+  
+ 
+  interface RegisterUser {
+    name: string
+    email: string
+    password: string
+    retypePassword: string
+  }
+  const [user, setUser] = useState<RegisterUser>({
+    name: '',
+    email: '',
+    password: '',
+    retypePassword: '',
+  })
+  
+const handleRegister = () =>{
+  console.log(user.password, user.retypePassword)
+ if (user.password !== user.retypePassword){
+  alert('Passwords do not match')
+ }
+ else{
+  createUserWithEmailAndPassword(auth, user.email, user.password).then(userCredentials => {
+        const newUser = userCredentials.user;
+        console.log(newUser)
+        console.log('Logged in with:', newUser.email);
+        console.log('Welcome', newUser.displayName)
+        //console.log('Phone Number:', newUser.phoneNumber)
+      })
+      .catch(error => alert(error.message))
+    }
   }
 
   interface RegisterUser {
@@ -87,12 +139,7 @@ const RegisterScreen = () => {
   // const {name, setName} = useState('')
   // const {email, setEmail} = useState('')
   // const {password, setPassword} = useState('')
-  const [user, setUser] = useState<RegisterUser>({
-    name: '',
-    email: '',
-    password: '',
-    retypePassword: '',
-  })
+  
 
 //   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, prop : string) => {
 //     const { name, value } = e.target
@@ -115,10 +162,17 @@ const RegisterScreen = () => {
                 type={`${component[0]}`}
                 placeholder={`${component[1]}`}
                 onChange={(text) => {
+
+                  if (component[1] === 'confirm password'){
+                  console.log(component)
+                  setUser(prevInfo =>({...prevInfo, retypePassword : text.target.value}))
+                  }
+                  else{
                     setUser(prevInfo => ({
 ...prevInfo, 
-[component[0]] : text
+[component[0]] : text.target.value
                     }))
+                  }
     
 // GET HELP ON THIS
                 }}
@@ -135,11 +189,13 @@ const RegisterScreen = () => {
        
       </div>
       
-      <button className={classes.registerButton} onClick={()=> {
-        console.log(user)
-      }}>
-        <text>register</text>
-      </button>
+      <Button className = {classes.registerButton} onClick={()=>{
+        handleRegister()
+      }}>Register</Button>
+<div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent:'center'}}>
+<text>Already have an account?</text>
+<Button className = {classes.registerButton} href="/auth/login">Login</Button>
+</div>
     </div>
   )
   
