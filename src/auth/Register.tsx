@@ -84,7 +84,7 @@ const RegisterScreen = () => {
        console.log('User detected.')
        //WHY IS ROUTES NOT POPPING UP?
        //WHY IS useEffect NOT WORKING?
-       navigate('../')
+       navigate('./')
        
      } 
    })
