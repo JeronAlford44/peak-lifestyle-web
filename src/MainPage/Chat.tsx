@@ -81,15 +81,12 @@ const useStyles = makeStyles(
 const ChatScreen = () => {
   const [userInput, setUserInput] = useState(['Hello', 'World'])
   const classes = useStyles()
-  
+
   const [currInput, setCurrInput] = useState('')
 
   const updateTextFieldUser = () => {
-    setUserInput((prevInput)=> {
-        
-
-       return [...prevInput, currInput]
-       
+    setUserInput(prevInput => {
+      return [...prevInput, currInput]
     })
     setCurrInput('')
   }
@@ -97,14 +94,14 @@ const ChatScreen = () => {
     <div>
       <div className={classes.chatContainer}>
         {userInput.map(word => {
-        if (word !== ''){
-          return <div className={classes.chatBubble}>{word}</div>}
+          if (word !== '') {
+            return <div className={classes.chatBubble}>{word}</div>
+          }
         })}
       </div>
       <div className={classes.inputBarContainer}>
         <input
           className={classes.inputBar}
-          
           onChange={e => {
             console.log(e)
             console.log(e.target.value)
