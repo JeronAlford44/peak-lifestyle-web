@@ -96,7 +96,7 @@ const ChatScreen = () => {
   return (
     <div>
       <div className={classes.chatContainer}>
-        {userInput.map(word => {
+        {userInput.reverse().map(word => {
         if (word !== ''){
           return <div className={classes.chatBubble}>{word}</div>}
         })}

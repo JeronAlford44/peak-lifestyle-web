@@ -8,9 +8,9 @@ import AppContainer from './containers/AppContainer'
 import AuthContainer from './containers/AuthContainer'
 import RegisterScreen from './auth/Register'
 import { makeStyles } from '@material-ui/core'
-import ChatScreen from './MainPage/Chat'
-import HomeScreen from './MainPage/Home'
-import SettingsScreen from './MainPage/Settings'
+import ChatScreen from './MainPage/Chat/Chat'
+import HomeScreen from './MainPage/Home/Home'
+import SettingsScreen from './MainPage/Settings/Settings'
 import LoginScreen from './auth/Login'
 
 
