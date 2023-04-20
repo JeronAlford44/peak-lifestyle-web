@@ -71,6 +71,7 @@ const useStyles = makeStyles(
       padding: '10px',
       marginRight: '5vw',
       position: 'relative',
+      marginBottom: '5px',
 
       color: 'white',
     },
@@ -93,7 +94,7 @@ const ChatScreen = () => {
   return (
     <div>
       <div className={classes.chatContainer}>
-        {userInput.reverse().map(word => {
+        {[...userInput].reverse().map(word => {
           if (word !== '') {
             return <div className={classes.chatBubble}>{word}</div>
           }
@@ -101,12 +102,21 @@ const ChatScreen = () => {
       </div>
       <div className={classes.inputBarContainer}>
         <input
+        
           className={classes.inputBar}
+          value = {currInput}
           onChange={e => {
             console.log(e)
+            
             console.log(e.target.value)
             console.log(userInput)
             setCurrInput(e.target.value)
+          }
+          }
+          onKeyDown={e => {
+            if (e.key === 'Enter' && currInput.length > 0){
+              updateTextFieldUser()
+            }
           }}
         ></input>
         <button

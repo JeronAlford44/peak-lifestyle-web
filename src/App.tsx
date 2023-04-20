@@ -1,18 +1,23 @@
 import { Routes, Route, BrowserRouter as Router } from 'react-router-dom'
 
-
 import AppContainer from './containers/AppContainer'
-
-
 
 import AuthContainer from './containers/AuthContainer'
 import RegisterScreen from './auth/Register'
 import { makeStyles } from '@material-ui/core'
 import ChatScreen from './MainPage/Chat/Chat'
 import HomeScreen from './MainPage/Home/Home'
-import SettingsScreen from './MainPage/Settings/Settings'
-import LoginScreen from './auth/Login'
 
+import LoginScreen from './auth/Login'
+import AboutScreen from './MainPage/Settings/components/About'
+import DisplayScreen from './MainPage/Settings/components/Display'
+import HelpScreen from './MainPage/Settings/components/Help'
+import LogoutScreen from './MainPage/Settings/components/Logout'
+import NotificationsScreen from './MainPage/Settings/components/Notifications'
+import PasswordResetScreen from './MainPage/Settings/components/PasswordReset'
+import ProgressScreen from './MainPage/Settings/components/Progress'
+import VerifyEmailScreen from './MainPage/Settings/components/VerifyEmail'
+import SettingsContainer from './containers/SettingsContainer'
 
 const useStyles = makeStyles(
   theme => ({
@@ -22,11 +27,11 @@ const useStyles = makeStyles(
       flexDirection: 'column',
       // justifyContent: 'center',
       // alignItems: 'center',
-      margin: theme.spacing(3),
+      // margin: theme.spacing(3),
       backgroundColor: '#680747',
       zIndex: 1,
-      width: '95vw',
-      height: '90vh'
+      width: '100vw',
+      height: '100vh',
     },
     ButtonsContainer: {
       display: 'flex',
@@ -53,37 +58,44 @@ const useStyles = makeStyles(
       alignItems: 'center',
       justifyContent: 'center',
       marginTop: '20vh',
-      flexDirection: 'column'
-      
+      flexDirection: 'column',
     },
     inputBar: {
-    padding: '10px',
-    fontSize: '32px',
-    fontFamily: 'Courier',
-      borderColor: "#861388",
+      padding: '10px',
+      fontSize: '32px',
+      fontFamily: 'Courier',
+      borderColor: '#861388',
       borderWidth: '5px',
       borderRadius: '32px',
-      marginBottom: '10vh'
-    }
+      marginBottom: '10vh',
+    },
   }),
   { name: 'App' }
 )
 const App = props => {
   const classes = useStyles()
   return (
-    <div className = {classes.root}>
+    <div className={classes.root}>
       <Router>
         <Routes>
           <Route path="/" element={<AppContainer />}>
             <Route path="home" element={<HomeScreen />} />
-            <Route path="chat" element={<ChatScreen/>} />
-            <Route path = 'settings' element = {<SettingsScreen/>}/>
+            <Route path="chat" element={<ChatScreen />} />
+            <Route path="settings" element={<SettingsContainer/>}>
+              <Route path="about" element={<AboutScreen />} />
+              <Route path="display-options" element={<DisplayScreen />} />
+              <Route path="help" element={<HelpScreen />} />
+              <Route path="log-out" element={<LogoutScreen />} />
+              <Route path="notifications" element={<NotificationsScreen />} />
+              <Route path="reset-password" element={<PasswordResetScreen />} />
+              <Route path="progress" element={<ProgressScreen />} />
+              <Route path="verify-email" element={<VerifyEmailScreen />} />
+            </Route>
           </Route>
           {/* <Route path="test" element={<BasicTable />} /> */}
-          <Route path = 'auth'  element = {<AuthContainer/>}>
-
-            <Route path = 'register'  element = {<RegisterScreen/>} />
-            <Route path = 'login'  element = {<LoginScreen/>} />
+          <Route path="auth" element={<AuthContainer />}>
+            <Route path="register" element={<RegisterScreen />} />
+            <Route path="login" element={<LoginScreen />} />
           </Route>
         </Routes>
       </Router>
