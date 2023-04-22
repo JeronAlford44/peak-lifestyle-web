@@ -17,7 +17,7 @@ const useStyles = makeStyles(
       // justifyContent: 'center',
       // alignItems: 'center',
       margin: theme.spacing(3),
-      backgroundColor: 'white',
+      backgroundColor: '#F79489',
     },
     ButtonsContainer: {
       display: 'flex',
@@ -66,9 +66,16 @@ const useStyles = makeStyles(
       borderRadius: 10,
       alignItems: 'center',
       marginTop: 20,
+      color: 'blue'
     },
     loginButton: {
-
+      backgroundColor: 'white',
+      width: '100%',
+      padding: 15,
+      borderRadius: 10,
+      alignItems: 'center',
+      marginTop: 20,
+      color: 'black'
     }
   }),
   { name: 'App' }
@@ -175,11 +182,11 @@ const handleLogin = () =>{
        
       </div>
       
-      <Button className = {classes.registerButton} onClick={()=>{
+      <Button className = {classes.loginButton} onClick={()=>{
         handleLogin()
       }}>Login</Button>
 <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent:'center'}}>
-<text>Haven't signed up??</text>
+<text style = {{fontSize: '15px', display: 'inline', flexWrap: 'wrap', width: '60vw',}}>Haven't signed up??</text>
 <Button className = {classes.registerButton} href="/auth/Register">Register</Button>
 </div>
     </div>

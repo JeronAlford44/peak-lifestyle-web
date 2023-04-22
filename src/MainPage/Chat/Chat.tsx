@@ -44,11 +44,14 @@ const useStyles = makeStyles(
     },
     inputBar: {
       padding: '3px',
-      fontSize: '32px',
-      fontFamily: 'Courier',
+      fontSize: '14px',
+      // fontFamily: 'Courier',
       borderColor: 'transparent',
       borderWidth: '5px',
-      width: '70vw',
+      width: '60vw',
+      height: '5vh',
+    
+      // flexWrap: 'wrap',
 
       margin: '20px',
     },
@@ -67,7 +70,7 @@ const useStyles = makeStyles(
       borderRadius: '18px',
       backgroundColor: '#680747',
       flexWrap: 'wrap',
-      maxWidth: '20vw',
+      maxWidth: '40vw',
       padding: '10px',
       marginRight: '5vw',
       position: 'relative',
@@ -102,19 +105,20 @@ const ChatScreen = () => {
       </div>
       <div className={classes.inputBarContainer}>
         <input
-        
           className={classes.inputBar}
-          value = {currInput}
+          value={currInput}
+          autoCapitalize="none"
+          autoCorrect="false"
+          autoComplete="off"
           onChange={e => {
             console.log(e)
-            
+
             console.log(e.target.value)
             console.log(userInput)
             setCurrInput(e.target.value)
-          }
-          }
+          }}
           onKeyDown={e => {
-            if (e.key === 'Enter' && currInput.length > 0){
+            if (e.key === 'Enter' && currInput.length > 0) {
               updateTextFieldUser()
             }
           }}
@@ -122,10 +126,10 @@ const ChatScreen = () => {
         <button
           style={{
             backgroundColor: 'transparent',
-            borderColor: 'white',
+            borderColor: 'transparent',
             position: 'relative',
-            top: '10px',
-            left: '50px',
+            top: '15px',
+            
           }}
           onClick={updateTextFieldUser}
         >

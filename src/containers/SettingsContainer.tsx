@@ -25,12 +25,19 @@ import HelpScreen from '../MainPage/Settings/components/Help'
 import LogoutScreen from '../MainPage/Settings/components/Logout'
 import DisplayScreen from '../MainPage/Settings/components/Display'
 
-import { makeStyles } from '@material-ui/core'
+import { Tab, makeStyles } from '@material-ui/core'
+import Tabs from '@material-ui/core'
 import { Stack } from '@mui/material'
 import { useNavigate, useNavigation } from 'react-router-dom'
 import { Outlet } from 'react-router-dom'
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ChangeDisplayName from '../MainPage/Settings/components/ChangeDisplayName'
+
+
 
 const drawerWidth = 240
+
 
 const useStyles = makeStyles(
   theme => ({
@@ -40,13 +47,52 @@ const useStyles = makeStyles(
       flexDirection: 'column',
       position: 'absolute',
       marginTop: '5vh',
+      
     },
     tool: {
-      backgroundColor: 'white',
-      borderBottomColor: 'black ',
-      borderWidth: 4,
-      borderBottomStyle: 'solid',
+      // backgroundColor: 'white !important',
+      // borderColor: 'black ',
+      // borderWidth: 1,
+      // borderBottomStyle: 'solid',
+      
+      alignSelf: 'center',
+      alignItems: 'center',
+      width: '80vw',
+      
+
+      
+      opacity: '100'
     },
+    ArrowBackIcon: {
+      color: '#1a0dab',
+      width: '50px',
+      height: '50px',
+      borderBottomColor: '#1a0dab',
+      borderBottomStyle: 'solid'
+
+    },
+    componentContainer: {
+      display: 'flex', 
+      flexDirection: 'column',
+      width: '90vw',
+      height: '80vh',
+      backgroundColor: 'white'
+
+    },
+    settingsHeader: {
+alignSelf: 'center',
+fontWeight: 'bold',
+fontSize: '32px',
+    },
+    menuBar: {
+      display: 'flex', 
+      flexDirection: 'row',
+      borderColor: 'grey',
+      borderRadius: '16px',
+      borderStyle: 'solid',
+      width: '80vw',
+      marginTop: '5px',
+    }
   }),
   { name: 'Settings' }
 )
@@ -54,6 +100,7 @@ const useStyles = makeStyles(
 export default function SettingsContainer(props) {
   const classes = useStyles(props)
   const navigate = useNavigate()
+  const [menuOpen, setMenuOpen] = useState(true)
 
   //['Progress', 'Notifications','Display Options', 'Verify Email', 'Reset Password', 'About', 'Log Out']
   const elements = [
@@ -65,37 +112,57 @@ export default function SettingsContainer(props) {
     ['About', <AboutScreen />],
     ['Log Out', <LogoutScreen />],
     ['Help', <HelpScreen />],
+    ['Change Display Name', <ChangeDisplayName/>]
   ]
   type DisplayFunction = () => JSX.Element
 
   // Using a function as state
   // https://stackoverflow.com/a/55621679
-  const [selected, setSelected] = React.useState<DisplayFunction>(() => () => {
+  const [selected, setSelected] = React.useState<DisplayFunction>(() =>  {
     return <AboutScreen />
   })
   const [currComponent, setCurrComponent] = useState('About Test')
 
   return (
-    <div>
-      <Stack className={classes.menuContainer}>
+    <div className = {classes.componentContainer}>
+      {menuOpen ? <div className={classes.settingsHeader}>Settings</div>: null}
+      {!menuOpen ? <ArrowBackIcon className={classes.ArrowBackIcon}
+      onClick= {()=> {
+        setMenuOpen(true)
+        navigate(-1)
+        
+      }}
+      
+      
+      
+      />: null}
+      {menuOpen? (
+      <div className={classes.menuContainer}>
         {elements.map((component: String | any, idx) => {
-          console.log(component[0].toLowerCase().replace(' ', '-'))
+          console.log(component[0].toLowerCase().replaceAll(' ', '-'))
           return (
+            <div className = {classes.menuBar}>
             <div
               className={classes.tool}
               onClick={() => {
-                navigate(`/${component[0].toLowerCase().replace(' ', '-')}`)
+                navigate(`/settings/${component[0].toLowerCase().replaceAll(' ', '-')}`)
                 console.log('checked')
+                console.log('menuopen:',menuOpen)
+                setMenuOpen(false)
+                
               }}
             >
               <Toolbar style={{ color: 'black' }}>
                 <text>{component[0]}</text>
               </Toolbar>
             </div>
+            <ArrowForwardIosIcon style = {{position: 'relative', top: '17px'}}/>
+            </div>
           )
         })}
-      </Stack>
-      <Outlet />
+       
+      </div>): null}
+      {!menuOpen? <Outlet /> : null}
     </div>
   )
 }

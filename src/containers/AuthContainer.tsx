@@ -51,6 +51,23 @@ const useStyles = makeStyles(
       borderWidth: '5px',
       borderRadius: '32px',
       marginBottom: '10vh'
+    },
+    heartImage: {
+      width: '200px',
+      height: '200px',
+      alignSelf: 'center'
+    },
+    logoText: {
+      '-webkit-text-stroke': '2px #FADCD9',
+  '-webkit-text-fill-color': '#F8AFA6',
+  fontSize: '64px',
+  
+  alignSelf: 'center',
+  
+    },
+    logoComponents: {
+      display: 'flex',
+      flexDirection: 'column'
     }
   }),
   { name: 'App' }
@@ -61,7 +78,11 @@ const AuthContainer = () => {
   return(  
     
     <div >
-        <div >Header2</div>
+        <div >Header2 test</div>
+        <div className={classes.logoComponents}>
+        <img src = 'https://static.vecteezy.com/system/resources/previews/008/505/848/original/medical-heart-illustration-png.png' className = {classes.heartImage}/>
+        <text className={classes.logoText}>Peak Lifestyle</text>
+        </div>
         <Outlet/>
 
     </div>

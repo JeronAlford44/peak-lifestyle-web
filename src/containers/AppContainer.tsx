@@ -20,7 +20,7 @@ const useStyles = makeStyles(
     },
     nav: {
       position: 'absolute',
-      top: '85vh',
+      top: '90vh',
       width: '90vw',
       backgroundColor: 'transparent',
     },

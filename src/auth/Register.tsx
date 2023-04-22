@@ -73,7 +73,7 @@ const useStyles = makeStyles(
   }),
   { name: 'App' }
 )
-
+var finalUser;
 const RegisterScreen = () => {
   const navigate = useNavigate()
 
@@ -99,8 +99,14 @@ const RegisterScreen = () => {
         .then(userCredentials => {
           const newUser = userCredentials.user
           console.log(newUser)
-          console.log('Logged in with:', newUser.email)
-          console.log('Welcome', newUser.displayName)
+          finalUser = newUser
+          updateProfile(auth.currentUser, {
+            displayName: user.name 
+          }).then(()=>{
+            console.log('Logged in with:', newUser.email)
+            console.log('Welcome', newUser.displayName)
+          })
+          
           //console.log('Phone Number:', newUser.phoneNumber)
         })
         .then(() => {
@@ -189,3 +195,4 @@ const RegisterScreen = () => {
 }
 
 export default RegisterScreen
+export {finalUser}
