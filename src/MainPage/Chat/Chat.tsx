@@ -58,7 +58,7 @@ const useStyles = makeStyles(
     chatContainer: {
       display: 'flex',
       backgroundColor: 'white',
-      height: '65vh',
+      height: '73vh',
       width: '90vw',
       alignItems: 'flex-end',
       flexDirection: 'column-reverse',
@@ -96,6 +96,7 @@ const ChatScreen = () => {
   }
   return (
     <div>
+      <div>Chat</div>
       <div className={classes.chatContainer}>
         {[...userInput].reverse().map(word => {
           if (word !== '') {

@@ -55,7 +55,8 @@ const useStyles = makeStyles(
     heartImage: {
       width: '200px',
       height: '200px',
-      alignSelf: 'center'
+      alignSelf: 'center',
+     
     },
     logoText: {
       '-webkit-text-stroke': '2px #FADCD9',

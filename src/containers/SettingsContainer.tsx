@@ -50,7 +50,7 @@ const useStyles = makeStyles(
       
     },
     tool: {
-      // backgroundColor: 'white !important',
+      backgroundColor: 'transparent',
       // borderColor: 'black ',
       // borderWidth: 1,
       // borderBottomStyle: 'solid',
@@ -58,16 +58,17 @@ const useStyles = makeStyles(
       alignSelf: 'center',
       alignItems: 'center',
       width: '80vw',
+     
       
 
       
       opacity: '100'
     },
     ArrowBackIcon: {
-      color: '#1a0dab',
+      color: 'blue',
       width: '50px',
       height: '50px',
-      borderBottomColor: '#1a0dab',
+      borderBottomColor: 'blue',
       borderBottomStyle: 'solid'
 
     },
@@ -75,7 +76,7 @@ const useStyles = makeStyles(
       display: 'flex', 
       flexDirection: 'column',
       width: '90vw',
-      height: '80vh',
+      height: '83vh',
       backgroundColor: 'white'
 
     },
@@ -83,6 +84,7 @@ const useStyles = makeStyles(
 alignSelf: 'center',
 fontWeight: 'bold',
 fontSize: '32px',
+color: 'white'
     },
     menuBar: {
       display: 'flex', 
@@ -92,6 +94,7 @@ fontSize: '32px',
       borderStyle: 'solid',
       width: '80vw',
       marginTop: '5px',
+      backgroundColor: '#680747'
     }
   }),
   { name: 'Settings' }
@@ -152,11 +155,11 @@ export default function SettingsContainer(props) {
                 
               }}
             >
-              <Toolbar style={{ color: 'black' }}>
+              <Toolbar style={{ color: 'white' }}>
                 <text>{component[0]}</text>
               </Toolbar>
             </div>
-            <ArrowForwardIosIcon style = {{position: 'relative', top: '17px'}}/>
+            <ArrowForwardIosIcon style = {{position: 'relative', top: '17px', color: 'white'}}/>
             </div>
           )
         })}

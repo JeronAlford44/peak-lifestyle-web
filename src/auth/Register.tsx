@@ -21,7 +21,7 @@ const useStyles = makeStyles(
       // justifyContent: 'center',
       // alignItems: 'center',
       margin: theme.spacing(3),
-      backgroundColor: 'white',
+      backgroundColor: '#680747',
     },
     ButtonsContainer: {
       display: 'flex',
@@ -185,7 +185,7 @@ const RegisterScreen = () => {
           justifyContent: 'center',
         }}
       >
-        <text>Already have an account?</text>
+        <text style = {{color:'white'}}>Already have an account?</text>
         <Button className={classes.registerButton} href="/auth/Login">
           Login
         </Button>

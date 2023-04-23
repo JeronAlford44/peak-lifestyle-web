@@ -31,7 +31,7 @@ const useStyles = makeStyles(
       // position: 'absolute',
       flexDirection: 'column',
       width: '90vw',
-      height: '80vh',
+      height: '82vh',
       backgroundColor: 'white'
 
     },

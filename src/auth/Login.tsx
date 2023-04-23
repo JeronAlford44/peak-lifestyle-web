@@ -17,7 +17,7 @@ const useStyles = makeStyles(
       // justifyContent: 'center',
       // alignItems: 'center',
       margin: theme.spacing(3),
-      backgroundColor: '#F79489',
+      backgroundColor: '#680747',
     },
     ButtonsContainer: {
       display: 'flex',
@@ -186,7 +186,7 @@ const handleLogin = () =>{
         handleLogin()
       }}>Login</Button>
 <div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent:'center'}}>
-<text style = {{fontSize: '15px', display: 'inline', flexWrap: 'wrap', width: '60vw',}}>Haven't signed up??</text>
+<text style = {{fontSize: '15px', display: 'inline', flexWrap: 'wrap', width: '60vw', color: 'white'}}>Haven't signed up??</text>
 <Button className = {classes.registerButton} href="/auth/Register">Register</Button>
 </div>
     </div>

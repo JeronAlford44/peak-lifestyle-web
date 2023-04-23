@@ -24,7 +24,7 @@ const useStyles = makeStyles(
       display: 'flex',
       flex: 1,
       flexDirection: 'column',
-      backgroundColor: '#F79489',
+      backgroundColor: '#680747',
       zIndex: 1,
       width: '100vw',
       height: '100vh',
