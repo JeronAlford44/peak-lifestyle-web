@@ -59,9 +59,9 @@ export default function ChangeDisplayName() {
       }).then(()=> {
         setDisplayName(newName) // update the display name in state
       setNewName('')
-      window.location.reload()
+      // window.location.reload()
      
-      navigate('/settings/change-display-name')
+      // navigate('/settings/change-display-name')
       })
       
     } catch (error) {
@@ -86,7 +86,7 @@ export default function ChangeDisplayName() {
       <div className={classes.nameSection}>
         <div style={{color:'white', marginBottom: '20px'}}>New Display Name</div>
         <input
-          style={{color:'white'}}
+          style={{color:'black', backgroundColor: 'white'}}
           className={classes.nameInput}
           placeholder="Enter new display name here"
           value={newName} // bind the input field to state

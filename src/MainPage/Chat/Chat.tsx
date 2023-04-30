@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core'
 import { useState } from 'react'
 import Box from '@mui/material/Box'
-import TextField from '@mui/material/TextField'
+
 import SendIcon from '@mui/icons-material/Send'
 
 const useStyles = makeStyles(
@@ -60,11 +60,11 @@ const useStyles = makeStyles(
       backgroundColor: 'white',
       height: '73vh',
       width: '90vw',
-      alignItems: 'flex-end',
-      flexDirection: 'column-reverse',
+      
+      flexDirection: 'column',
     },
 
-    chatBubble: {
+    chatUserBubble: {
       borderColor: 'white',
       borderWidth: '5px',
       borderRadius: '18px',
@@ -75,9 +75,26 @@ const useStyles = makeStyles(
       marginRight: '5vw',
       position: 'relative',
       marginBottom: '5px',
+      alignSelf: 'flex-end',
+      
 
       color: 'white',
     },
+    chatBotBubble: {
+      borderColor: 'white',
+      borderWidth: '5px',
+      borderRadius: '18px',
+      backgroundColor: 'Grey',
+      flexWrap: 'wrap',
+      maxWidth: '40vw',
+      padding: '10px',
+      marginRight: '5vw',
+      position: 'relative',
+      marginBottom: '5px',
+      alignSelf: 'flex-start',
+
+      color: 'white',
+    }
   }),
   { name: 'App' }
 )
@@ -85,6 +102,8 @@ const useStyles = makeStyles(
 const ChatScreen = () => {
   const [userInput, setUserInput] = useState(['Hello', 'World'])
   const classes = useStyles()
+  const [botInput, setBotInput] = useState(['welcome!', 'how are you today?'])
+  const [botsTurn, setBotsTurn] = useState<boolean>(true)
 
   const [currInput, setCurrInput] = useState('')
 
@@ -98,11 +117,23 @@ const ChatScreen = () => {
     <div>
       <div>Chat</div>
       <div className={classes.chatContainer}>
-        {[...userInput].reverse().map(word => {
+      {[...botInput].map(word => {
           if (word !== '') {
-            return <div className={classes.chatBubble}>{word}</div>
+         
+            return (
+            
+            <div className={classes.chatBotBubble}>{word}</div>
+            
+            )
           }
         })}
+        {[...userInput].map(word => {
+          if (word !== '' ) {
+            
+            return <div className={classes.chatUserBubble}>{word}</div>
+          }
+        })}
+        
       </div>
       <div className={classes.inputBarContainer}>
         <input
