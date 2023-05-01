@@ -1,6 +1,12 @@
 import { makeStyles } from '@material-ui/core'
 import { useState } from 'react'
 import Box from '@mui/material/Box'
+import { doc, getDocFromCache } from "firebase/firestore";
+
+import {app} from '../../firebaseConfig'
+import { getFirestore } from 'firebase/firestore';
+import { getDoc } from 'firebase/firestore';
+
 
 import SendIcon from '@mui/icons-material/Send'
 
@@ -100,13 +106,38 @@ const useStyles = makeStyles(
 )
 
 const ChatScreen = () => {
+  const db = getFirestore(app)
   const [userInput, setUserInput] = useState(['Hello', 'World'])
   const classes = useStyles()
   const [botInput, setBotInput] = useState(['welcome!', 'how are you today?'])
   const [botsTurn, setBotsTurn] = useState<boolean>(true)
+  const [Greetings, setGreetings] = useState<object>({})
+  
 
   const [currInput, setCurrInput] = useState('')
+  const fetchGreetings = async() => {    
 
+// Get a document, forcing the SDK to fetch from the offline cache.
+const docRef = doc(db, "Chatbot", "greetings");
+try {
+  const docSnap = await getDoc(docRef);
+  if(docSnap.exists()) {
+     await setGreetings(docSnap.data().greetings)
+    console.log(Greetings)
+      // console.log(docSnap.data());
+  } else {
+      console.log("Document does not exist")
+  }
+
+} catch(error) {
+  console.log(error)
+}
+
+  
+   
+  }
+  
+  
   const updateTextFieldUser = () => {
     setUserInput(prevInput => {
       return [...prevInput, currInput]
@@ -143,7 +174,9 @@ const ChatScreen = () => {
           autoCorrect="false"
           autoComplete="off"
           onChange={e => {
-            console.log(e)
+            fetchGreetings()
+            console.log('greetings',Greetings)
+            
 
             console.log(e.target.value)
             console.log(userInput)
