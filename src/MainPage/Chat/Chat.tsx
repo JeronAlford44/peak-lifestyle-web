@@ -1,12 +1,11 @@
 import { makeStyles } from '@material-ui/core'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
-import { doc, getDocFromCache } from "firebase/firestore";
+import { doc, getDocFromCache } from 'firebase/firestore'
 
-import {app} from '../../firebaseConfig'
-import { getFirestore } from 'firebase/firestore';
-import { getDoc } from 'firebase/firestore';
-
+import { app } from '../../firebaseConfig'
+import { getFirestore } from 'firebase/firestore'
+import { getDoc } from 'firebase/firestore'
 
 import SendIcon from '@mui/icons-material/Send'
 
@@ -56,7 +55,7 @@ const useStyles = makeStyles(
       borderWidth: '5px',
       width: '60vw',
       height: '5vh',
-    
+
       // flexWrap: 'wrap',
 
       margin: '20px',
@@ -66,7 +65,7 @@ const useStyles = makeStyles(
       backgroundColor: 'white',
       height: '73vh',
       width: '90vw',
-      
+
       flexDirection: 'column',
     },
 
@@ -82,7 +81,6 @@ const useStyles = makeStyles(
       position: 'relative',
       marginBottom: '5px',
       alignSelf: 'flex-end',
-      
 
       color: 'white',
     },
@@ -100,7 +98,7 @@ const useStyles = makeStyles(
       alignSelf: 'flex-start',
 
       color: 'white',
-    }
+    },
   }),
   { name: 'App' }
 )
@@ -112,32 +110,21 @@ const ChatScreen = () => {
   const [botInput, setBotInput] = useState(['welcome!', 'how are you today?'])
   const [botsTurn, setBotsTurn] = useState<boolean>(true)
   const [Greetings, setGreetings] = useState<object>({})
-  
 
   const [currInput, setCurrInput] = useState('')
-  const fetchGreetings = async() => {    
+  const fetchGreetings = async () => {
+    // Get a document, forcing the SDK to fetch from the offline cache.
+    const docRef = doc(db, 'Chatbot', 'greetings')
 
-// Get a document, forcing the SDK to fetch from the offline cache.
-const docRef = doc(db, "Chatbot", "greetings");
-try {
-  const docSnap = await getDoc(docRef);
-  if(docSnap.exists()) {
-     await setGreetings(docSnap.data().greetings)
+    const docSnap = await getDoc(docRef)
+      .then(val => setGreetings(val.data().greetings))
+      .then(() => console.log(JSON.stringify(Greetings).split(',')))
+      .catch(error => console.log(error))
+  }
+
+  useEffect(() => {
     console.log(Greetings)
-      // console.log(docSnap.data());
-  } else {
-      console.log("Document does not exist")
-  }
-
-} catch(error) {
-  console.log(error)
-}
-
-  
-   
-  }
-  
-  
+  }, [Greetings])
   const updateTextFieldUser = () => {
     setUserInput(prevInput => {
       return [...prevInput, currInput]
@@ -148,23 +135,16 @@ try {
     <div>
       <div>Chat</div>
       <div className={classes.chatContainer}>
-      {[...botInput].map(word => {
+        {[...botInput].map(word => {
           if (word !== '') {
-         
-            return (
-            
-            <div className={classes.chatBotBubble}>{word}</div>
-            
-            )
+            return <div className={classes.chatBotBubble}>{word}</div>
           }
         })}
         {[...userInput].map(word => {
-          if (word !== '' ) {
-            
+          if (word !== '') {
             return <div className={classes.chatUserBubble}>{word}</div>
           }
         })}
-        
       </div>
       <div className={classes.inputBarContainer}>
         <input
@@ -175,8 +155,7 @@ try {
           autoComplete="off"
           onChange={e => {
             fetchGreetings()
-            console.log('greetings',Greetings)
-            
+            console.log('greetings', Greetings)
 
             console.log(e.target.value)
             console.log(userInput)
@@ -194,7 +173,6 @@ try {
             borderColor: 'transparent',
             position: 'relative',
             top: '15px',
-            
           }}
           onClick={updateTextFieldUser}
         >

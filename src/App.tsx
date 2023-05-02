@@ -1,22 +1,23 @@
-import { Routes, Route,  BrowserRouter as Router,Navigate } from 'react-router-dom';
-import AppContainer from './containers/AppContainer';
-import AuthContainer from './containers/AuthContainer';
-import RegisterScreen from './auth/Register';
-import { makeStyles } from '@material-ui/core';
-import ChatScreen from './MainPage/Chat/Chat';
-import HomeScreen from './MainPage/Home/Home';
-import LoginScreen from './auth/Login';
-import AboutScreen from './MainPage/Settings/components/About';
-import DisplayScreen from './MainPage/Settings/components/Display';
-import HelpScreen from './MainPage/Settings/components/Help';
-import LogoutScreen from './MainPage/Settings/components/Logout';
-import NotificationsScreen from './MainPage/Settings/components/Notifications';
-import PasswordResetScreen from './MainPage/Settings/components/PasswordReset';
-import ProgressScreen from './MainPage/Settings/components/Progress';
-import VerifyEmailScreen from './MainPage/Settings/components/VerifyEmail';
-import SettingsContainer from './containers/SettingsContainer';
-import ChangeDisplayName from './MainPage/Settings/components/ChangeDisplayName';
+import { Routes, Route, BrowserRouter as Router, Navigate } from 'react-router-dom'
+import AppContainer from './containers/AppContainer'
+import AuthContainer from './containers/AuthContainer'
+import RegisterScreen from './auth/Register'
+import { makeStyles } from '@material-ui/core'
+import ChatScreen from './MainPage/Chat/Chat'
+import HomeScreen from './MainPage/Home/Home'
+import LoginScreen from './auth/Login'
+import AboutScreen from './MainPage/Settings/components/About'
+import DisplayScreen from './MainPage/Settings/components/Display'
+import HelpScreen from './MainPage/Settings/components/Help'
+import LogoutScreen from './MainPage/Settings/components/Logout'
+import NotificationsScreen from './MainPage/Settings/components/Notifications'
+import PasswordResetScreen from './MainPage/Settings/components/PasswordReset'
+import ProgressScreen from './MainPage/Settings/components/Progress'
+import VerifyEmailScreen from './MainPage/Settings/components/VerifyEmail'
+import SettingsContainer from './containers/SettingsContainer'
+import ChangeDisplayName from './MainPage/Settings/components/ChangeDisplayName'
 
+import { ListGreetings } from './examples/crud/ListGreetings'
 
 const useStyles = makeStyles(
   theme => ({
@@ -67,20 +68,20 @@ const useStyles = makeStyles(
     },
   }),
   { name: 'App' }
-);
+)
 
 const App = props => {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <div className={classes.root}>
       <Router>
         <Routes>
-        <Route path="/" element={<Navigate to="/auth/login" replace={true} />} />
+          <Route path="/" element={<Navigate to="/auth/login" replace={true} />} />
           <Route path="/" element={<AppContainer />}>
             <Route path="home" element={<HomeScreen />} />
             <Route path="chat" element={<ChatScreen />} />
-            <Route path="settings" element={<SettingsContainer/>}>
+            <Route path="settings" element={<SettingsContainer />}>
               <Route path="about" element={<AboutScreen />} />
               <Route path="display-options" element={<DisplayScreen />} />
               <Route path="help" element={<HelpScreen />} />
@@ -89,7 +90,12 @@ const App = props => {
               <Route path="reset-password" element={<PasswordResetScreen />} />
               <Route path="progress" element={<ProgressScreen />} />
               <Route path="verify-email" element={<VerifyEmailScreen />} />
-              <Route path="change-display-name" element={<ChangeDisplayName/>} />
+              <Route path="change-display-name" element={<ChangeDisplayName />} />
+            </Route>
+            <Route path="examples">
+              <Route path="greetings">
+                <Route path="list" element={<ListGreetings />} />
+              </Route>
             </Route>
           </Route>
           <Route path="auth" element={<AuthContainer />}>
@@ -99,7 +105,7 @@ const App = props => {
         </Routes>
       </Router>
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App

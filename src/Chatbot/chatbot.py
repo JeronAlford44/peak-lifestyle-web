@@ -5,14 +5,15 @@ from firebase_admin import firestore
 import json
 
 
-firebaseConfig = '{ apiKey: "AIzaSyDjN0OJDW7om1zm7whd5-5rTmbeXDPIzTA",authDomain: "peak-lifestyle-web.firebaseapp.com", projectId: "peak-lifestyle-web", storageBucket: "peak-lifestyle-web.appspot.com",messagingSenderId: "38291866815",appId: "1:38291866815:web:4d2809d4014ee73cf2f20a" }'
-
-# Application Default credentials are automatically created.
 
 
 
 
-cred = credentials.Certificate("../../../peak-lifestyle-web-firebase-adminsdk-fev4n-c7253ed4b0.json")
+
+
+#ONLY ADMIN can access this credential object
+cred = credentials.Certificate("../../../peak-lifestyle-web-firebase-adminsdk-fev4n-c7253ed4b0.json") 
+
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 docs = db.collection('HelpForms').get()
