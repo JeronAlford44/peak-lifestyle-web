@@ -9,7 +9,7 @@ import {
 import { Outlet, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import { unsubscribe } from 'diagnostics_channel'
-import { doc, setDoc } from 'firebase/firestore'
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore'
 
 // createStyles (old) vs makeStyles (new)
 // https://smartdevpreneur.com/material-ui-makestyles-usestyles-createstyles-and-withstyles-explained/
@@ -104,7 +104,7 @@ const RegisterScreen = () => {
           updateProfile(auth.currentUser, {
             displayName: user.name 
           }).then(async()=>{
-            await setDoc(doc(dbh, "Users", user.name), {info: {
+            await addDoc(collection(dbh, "Users"), {info: {
               name: user.name,
               email: user.email,
               RegisterDate: new Date().valueOf(),

@@ -100,7 +100,7 @@ const useStyles = makeStyles(
       color: 'white',
     },
   }),
-  { name: 'App' }
+  { name: 'ChatScreen' }
 )
 
 const ChatScreen = () => {
