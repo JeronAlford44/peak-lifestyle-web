@@ -3,6 +3,7 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 
 import json
+import asyncio 
 
 
 
@@ -18,10 +19,13 @@ firebase_admin.initialize_app(cred)
 db = firestore.client()
 docs = db.collection('HelpForms').get()
 
+
 # Print the data in each document
 for doc in docs:
     print(doc.to_dict())
 
-greetings = {u'greetings' : u'"Welcome!", "I hope you are doing well!", "Thanks for joining us today!", "Thanks again for loggin in!", "How are you feeling today?"'} 
-print(json.dumps(greetings))
-db.collection(u'Chatbot').document(u'greetings').set((greetings))
+
+greetings = ["Welcome!","I hope you are doing well!", "Thanks for joining us today!", "Thanks again for loggin in!", "How are you feeling today?", 'Hi!']
+
+for word in greetings:
+    db.collection("greetings").add({"text": word})

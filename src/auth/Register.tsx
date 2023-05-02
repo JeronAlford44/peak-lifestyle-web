@@ -1,6 +1,6 @@
 import { Button, makeStyles } from '@material-ui/core'
 import { useState } from 'react'
-import { auth } from '../firebaseConfig'
+import { auth, dbh } from '../firebaseConfig'
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -9,6 +9,7 @@ import {
 import { Outlet, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import { unsubscribe } from 'diagnostics_channel'
+import { doc, setDoc } from 'firebase/firestore'
 
 // createStyles (old) vs makeStyles (new)
 // https://smartdevpreneur.com/material-ui-makestyles-usestyles-createstyles-and-withstyles-explained/
@@ -90,7 +91,7 @@ const RegisterScreen = () => {
     retypePassword: '',
   })
 
-  const handleRegister = () => {
+  const handleRegister = async() => {
     console.log(user.password, user.retypePassword)
     if (user.password !== user.retypePassword) {
       alert('Passwords do not match')
@@ -102,7 +103,18 @@ const RegisterScreen = () => {
           finalUser = newUser
           updateProfile(auth.currentUser, {
             displayName: user.name 
-          }).then(()=>{
+          }).then(async()=>{
+            await setDoc(doc(dbh, "Users", user.name), {info: {
+              name: user.name,
+              email: user.email,
+              RegisterDate: new Date().valueOf(),
+              ChatLogs: {
+                LogDate: 'user text will go here'
+              }
+            }
+          
+          });
+            
             console.log('Logged in with:', newUser.email)
             console.log('Welcome', newUser.displayName)
           })

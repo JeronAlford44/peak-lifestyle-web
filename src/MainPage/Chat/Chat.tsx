@@ -1,9 +1,9 @@
 import { makeStyles } from '@material-ui/core'
 import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
-import { doc, getDocFromCache } from 'firebase/firestore'
+import { collection, doc, getDocFromCache, getDocs } from 'firebase/firestore'
 
-import { app } from '../../firebaseConfig'
+import { app, dbh } from '../../firebaseConfig'
 import { getFirestore } from 'firebase/firestore'
 import { getDoc } from 'firebase/firestore'
 
@@ -109,21 +109,47 @@ const ChatScreen = () => {
   const classes = useStyles()
   const [botInput, setBotInput] = useState(['welcome!', 'how are you today?'])
   const [botsTurn, setBotsTurn] = useState<boolean>(true)
-  const [Greetings, setGreetings] = useState<object>({})
+  const [Greetings, setGreetings] = useState<item[]>([])
 
   const [currInput, setCurrInput] = useState('')
-  const fetchGreetings = async () => {
-    // Get a document, forcing the SDK to fetch from the offline cache.
-    const docRef = doc(db, 'Chatbot', 'greetings')
+  
+  useEffect(() => {
+    console.log('HELLO')
+    const retrieveData = async () => {
+      const coll = collection(dbh, 'greetings')
+      const querySnapshot = await getDocs(coll)
 
-    const docSnap = await getDoc(docRef)
-      .then(val => setGreetings(val.data().greetings))
-      .then(() => console.log(JSON.stringify(Greetings).split(',')))
-      .catch(error => console.log(error))
+      const newGreetings = []
+      querySnapshot.forEach(async doc => {
+        console.log(doc.id, ' => ', doc)
+        const data = doc.data()
+
+        const item = {
+          id: doc.id,
+          text: data.text,
+        }
+        newGreetings.push(item)
+
+        // const greetingColl = collection(dbh, 'greetings', doc.id)
+      })
+
+      setGreetings(newGreetings)
+    }
+
+    retrieveData()
+  }, [])
+  interface item  {
+    'id': string,
+    'text': string
   }
 
   useEffect(() => {
-    console.log(Greetings)
+    const printGreetings = () => {
+    Greetings.forEach(element => {
+      console.log("Text:",element.text)
+    });
+  }
+    printGreetings()
   }, [Greetings])
   const updateTextFieldUser = () => {
     setUserInput(prevInput => {
@@ -135,9 +161,9 @@ const ChatScreen = () => {
     <div>
       <div>Chat</div>
       <div className={classes.chatContainer}>
-        {[...botInput].map(word => {
-          if (word !== '') {
-            return <div className={classes.chatBotBubble}>{word}</div>
+        {[...Greetings].map(word => {
+          if (word.text !== '') {
+            return <div className={classes.chatBotBubble}>{word.text}</div>
           }
         })}
         {[...userInput].map(word => {
@@ -154,7 +180,7 @@ const ChatScreen = () => {
           autoCorrect="false"
           autoComplete="off"
           onChange={e => {
-            fetchGreetings()
+           
             console.log('greetings', Greetings)
 
             console.log(e.target.value)
