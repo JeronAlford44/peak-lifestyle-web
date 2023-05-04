@@ -93,6 +93,7 @@ const RegisterScreen = () => {
 
   const handleRegister = async() => {
     console.log(user.password, user.retypePassword)
+    console.log(auth.currentUser.uid)
     if (user.password !== user.retypePassword) {
       alert('Passwords do not match')
     } else {
@@ -103,8 +104,9 @@ const RegisterScreen = () => {
           finalUser = newUser
           updateProfile(auth.currentUser, {
             displayName: user.name 
+
           }).then(async()=>{
-            await addDoc(collection(dbh, "Users"), {info: {
+            await setDoc(doc(dbh, "Users", auth.currentUser.uid), {info: {
               name: user.name,
               email: user.email,
               RegisterDate: new Date().valueOf(),

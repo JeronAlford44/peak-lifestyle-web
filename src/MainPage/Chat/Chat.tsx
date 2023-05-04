@@ -1,9 +1,9 @@
 import { makeStyles } from '@material-ui/core'
 import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
-import { collection, doc, getDocFromCache, getDocs } from 'firebase/firestore'
+import { collection, doc, getDocFromCache, getDocs, setDoc, updateDoc } from 'firebase/firestore'
 
-import { app, dbh } from '../../firebaseConfig'
+import { app, auth, dbh } from '../../firebaseConfig'
 import { getFirestore } from 'firebase/firestore'
 import { getDoc } from 'firebase/firestore'
 
@@ -151,11 +151,23 @@ const ChatScreen = () => {
   }
     printGreetings()
   }, [Greetings])
-  const updateTextFieldUser = () => {
+  const updateTextFieldUser = async() => {
     setUserInput(prevInput => {
       return [...prevInput, currInput]
     })
-    setCurrInput('')
+
+    
+
+    const date = new Date().valueOf()
+    const newChatLogs = {
+      
+      [date]: currInput
+    };
+
+    const chatDocRef = doc(dbh, 'Users', auth.currentUser.uid);
+await setDoc(chatDocRef, {info: {ChatLogs: newChatLogs}}, {merge: true}).then(()=> setCurrInput(''));
+
+    
   }
   return (
     <div>
