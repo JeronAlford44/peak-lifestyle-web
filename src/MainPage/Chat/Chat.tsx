@@ -8,6 +8,7 @@ import { getFirestore } from 'firebase/firestore'
 import { getDoc } from 'firebase/firestore'
 
 import SendIcon from '@mui/icons-material/Send'
+import handleChatbotReq from '../../Chatbot/chatbot'
 
 const useStyles = makeStyles(
   theme => ({
@@ -112,7 +113,7 @@ const ChatScreen = () => {
   const [Greetings, setGreetings] = useState<item[]>([])
 
   const [currInput, setCurrInput] = useState('')
-  
+
   useEffect(() => {
     console.log('HELLO')
     const retrieveData = async () => {
@@ -138,36 +139,34 @@ const ChatScreen = () => {
 
     retrieveData()
   }, [])
-  interface item  {
-    'id': string,
-    'text': string
+  interface item {
+    id: string
+    text: string
   }
 
   useEffect(() => {
     const printGreetings = () => {
-    Greetings.forEach(element => {
-      console.log("Text:",element.text)
-    });
-  }
+      Greetings.forEach(element => {
+        console.log('Text:', element.text)
+      })
+    }
     printGreetings()
   }, [Greetings])
-  const updateTextFieldUser = async() => {
+  const updateTextFieldUser = async () => {
     setUserInput(prevInput => {
       return [...prevInput, currInput]
     })
 
-    
-
     const date = new Date().valueOf()
     const newChatLogs = {
-      
-      [date]: currInput
-    };
+      [date]: currInput,
+    }
 
-    const chatDocRef = doc(dbh, 'Users', auth.currentUser.uid);
-await setDoc(chatDocRef, {info: {ChatLogs: newChatLogs}}, {merge: true}).then(()=> setCurrInput(''));
-
-    
+    const chatDocRef = doc(dbh, 'Users', auth.currentUser.uid)
+    await setDoc(chatDocRef, { info: { ChatLogs: newChatLogs } }, { merge: true }).then(() =>
+      setCurrInput('')
+    )
+    // handleChatbotReq()
   }
   return (
     <div>
@@ -192,7 +191,6 @@ await setDoc(chatDocRef, {info: {ChatLogs: newChatLogs}}, {merge: true}).then(()
           autoCorrect="false"
           autoComplete="off"
           onChange={e => {
-           
             console.log('greetings', Greetings)
 
             console.log(e.target.value)

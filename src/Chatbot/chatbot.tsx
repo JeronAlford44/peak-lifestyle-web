@@ -16,8 +16,8 @@ info: {
 }
     }
 useEffect(()=> {
-type maxDate = Tree
-const Doc = getDoc(doc(dbh, 'Users', auth.currentUser.uid))
+const getChatItems = async() => {
+const Doc = await getDoc(doc(dbh, 'Users', auth.currentUser.uid))
 console.log(Doc)
 // Doc.info.ChatLogs.forEach((time)=> {if (time > max){
 //     setMax(time)
@@ -25,8 +25,10 @@ console.log(Doc)
 
 
 // })
-
-}, [])
 }
-export {handleChatbotReq}
-export default ChatbotReq
+getChatItems()
+}, [doc(dbh, 'Users', auth.currentUser.uid)])
+
+}
+export default handleChatbotReq
+export {ChatbotReq}
