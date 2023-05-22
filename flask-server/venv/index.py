@@ -1,4 +1,7 @@
 from flask import Flask
+from flask import jsonify
+from flask import request
+
 
 
 app = Flask(__name__)
@@ -24,8 +27,29 @@ def contact():
     return 'Contact Page Route'
 
 
+
+@app.route('/processjson',methods = {['POST']})
+def processjson():
+    data = request.get_json()
+    if data: 
+        return jsonify({'data': data})
+
+
+
+
+
+
+
+
+
+
+
+
 @app.route('/api')
 def api():
     with open('data.json', mode='r') as my_file:
         text = my_file.read()
         return text
+    
+if __name__ == "__main__":
+    app.run(debug = True)

@@ -71,7 +71,7 @@ const useStyles = makeStyles(
       width: '90vw',
 
       flexDirection: 'column',
-      overflowY: 'scroll'
+      overflowY: 'scroll',
     },
 
     chatUserBubble: {
@@ -108,8 +108,7 @@ const useStyles = makeStyles(
   { name: 'ChatScreen' }
 )
 
-const ChatScreen = (e) => {
-
+const ChatScreen = e => {
   const db = getFirestore(app)
   const [userInput, setUserInput] = useState(['Hello', 'World'])
   const classes = useStyles()
@@ -120,26 +119,26 @@ const ChatScreen = (e) => {
   const [currInput, setCurrInput] = useState('')
 
   useEffect(() => {
-  const retrieveData = async () => {
-    const coll = collection(dbh, 'greetings');
-    const querySnapshot = await getDocs(coll);
-    const newGreetings = [];
-    querySnapshot.forEach(async (doc) => {
-      console.log(doc.id, ' => ', doc);
-      const data = doc.data();
+    const retrieveData = async () => {
+      const coll = collection(dbh, 'greetings')
+      const querySnapshot = await getDocs(coll)
+      const newGreetings = []
+      querySnapshot.forEach(async doc => {
+        console.log(doc.id, ' => ', doc)
+        const data = doc.data()
 
-      const item = {
-        id: doc.id,
-        text: data.text,
-      };
-      newGreetings.push(item);
-    });
+        const item = {
+          id: doc.id,
+          text: data.text,
+        }
+        newGreetings.push(item)
+      })
 
-    setGreetings(newGreetings);
-  };
+      setGreetings(newGreetings)
+    }
 
-  retrieveData();
-}, []);
+    retrieveData()
+  }, [])
   interface item {
     id: string
     text: string
@@ -166,15 +165,15 @@ const ChatScreen = (e) => {
     const chatDocRef = doc(dbh, 'Users', auth.currentUser.uid)
     await setDoc(chatDocRef, { info: { ChatLogs: newChatLogs } }, { merge: true }).then(() =>
       setCurrInput('')
-    
     )
     // await fetch('/users', {method: 'POST', body: JSON.stringify({Test: newChatLogs})}).catch(error => console.log(error))
-    await fetch('/users').then(res => res.json()).catch(error => console.log("error 1: " ,error)).then(data => console.log(data)).catch(error => console.log("error 2: ", error))
+    await fetch('http://127.0.0.1:5000/processjson', { method: 'POST', body: 'Test' })
+      .catch(error => console.log('error 1: ', error))
+     
     // handleChatbotReq()
   }
   return (
     <div>
-      
       <div className={classes.chatContainer}>
         {[...Greetings].map(word => {
           if (word.text !== '') {
