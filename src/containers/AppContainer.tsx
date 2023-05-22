@@ -41,7 +41,7 @@ const AppContainer = (props: any) => {
 
   return (
     <div className={classes.root}>
-      <div>Root header TEST</div>
+      <div style ={{borderTopColor: 'transparent',borderLeftColor: 'transparent', borderRightColor: 'transparent', borderBottomColor: 'grey !important', borderStyle: 'solid', marginBottom: '2vh'}}>APP CONTAINER HEADER</div>
 
       <Outlet />
       <BottomNavigation

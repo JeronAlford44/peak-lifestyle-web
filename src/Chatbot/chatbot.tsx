@@ -8,13 +8,13 @@ const ChatbotReq = () => {
 }
 const handleChatbotReq =() => {
     const [max, setMax] = useState(0)
-    interface Tree {
-info: {
-    ChatLogs: {
+//     interface Tree {
+// info: {
+//     ChatLogs: {
 
-    }
-}
-    }
+//     }
+// }
+//     }
 useEffect(()=> {
 const getChatItems = async() => {
 const Doc = await getDoc(doc(dbh, 'Users', auth.currentUser.uid))

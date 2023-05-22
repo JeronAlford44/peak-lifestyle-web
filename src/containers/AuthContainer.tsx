@@ -79,7 +79,7 @@ const AuthContainer = () => {
   return(  
     
     <div >
-        <div >Header2 test</div>
+        <div >AUTH HEADER</div>
         <div className={classes.logoComponents}>
         <img src = 'https://static.vecteezy.com/system/resources/previews/008/505/848/original/medical-heart-illustration-png.png' className = {classes.heartImage}/>
         <text className={classes.logoText}>Peak Lifestyle</text>

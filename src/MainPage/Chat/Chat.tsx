@@ -9,6 +9,7 @@ import { getDoc } from 'firebase/firestore'
 
 import SendIcon from '@mui/icons-material/Send'
 import handleChatbotReq from '../../Chatbot/chatbot'
+import { error } from 'console'
 
 const useStyles = makeStyles(
   theme => ({
@@ -63,11 +64,14 @@ const useStyles = makeStyles(
     },
     chatContainer: {
       display: 'flex',
-      backgroundColor: 'white',
+      backgroundColor: 'black',
+      maxHeight: '73vh',
+      maxWidth: '90vw',
       height: '73vh',
       width: '90vw',
 
       flexDirection: 'column',
+      overflowY: 'scroll'
     },
 
     chatUserBubble: {
@@ -104,7 +108,8 @@ const useStyles = makeStyles(
   { name: 'ChatScreen' }
 )
 
-const ChatScreen = () => {
+const ChatScreen = (e) => {
+
   const db = getFirestore(app)
   const [userInput, setUserInput] = useState(['Hello', 'World'])
   const classes = useStyles()
@@ -115,30 +120,26 @@ const ChatScreen = () => {
   const [currInput, setCurrInput] = useState('')
 
   useEffect(() => {
-    console.log('HELLO')
-    const retrieveData = async () => {
-      const coll = collection(dbh, 'greetings')
-      const querySnapshot = await getDocs(coll)
+  const retrieveData = async () => {
+    const coll = collection(dbh, 'greetings');
+    const querySnapshot = await getDocs(coll);
+    const newGreetings = [];
+    querySnapshot.forEach(async (doc) => {
+      console.log(doc.id, ' => ', doc);
+      const data = doc.data();
 
-      const newGreetings = []
-      querySnapshot.forEach(async doc => {
-        console.log(doc.id, ' => ', doc)
-        const data = doc.data()
+      const item = {
+        id: doc.id,
+        text: data.text,
+      };
+      newGreetings.push(item);
+    });
 
-        const item = {
-          id: doc.id,
-          text: data.text,
-        }
-        newGreetings.push(item)
+    setGreetings(newGreetings);
+  };
 
-        // const greetingColl = collection(dbh, 'greetings', doc.id)
-      })
-
-      setGreetings(newGreetings)
-    }
-
-    retrieveData()
-  }, [])
+  retrieveData();
+}, []);
   interface item {
     id: string
     text: string
@@ -165,12 +166,15 @@ const ChatScreen = () => {
     const chatDocRef = doc(dbh, 'Users', auth.currentUser.uid)
     await setDoc(chatDocRef, { info: { ChatLogs: newChatLogs } }, { merge: true }).then(() =>
       setCurrInput('')
+    
     )
+    // await fetch('/users', {method: 'POST', body: JSON.stringify({Test: newChatLogs})}).catch(error => console.log(error))
+    await fetch('/users').then(res => res.json()).catch(error => console.log("error 1: " ,error)).then(data => console.log(data)).catch(error => console.log("error 2: ", error))
     // handleChatbotReq()
   }
   return (
     <div>
-      <div>Chat</div>
+      
       <div className={classes.chatContainer}>
         {[...Greetings].map(word => {
           if (word.text !== '') {

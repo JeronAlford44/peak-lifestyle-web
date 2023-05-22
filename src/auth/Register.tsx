@@ -22,7 +22,8 @@ const useStyles = makeStyles(
       // justifyContent: 'center',
       // alignItems: 'center',
       margin: theme.spacing(3),
-      backgroundColor: '#680747',
+      //backgroundColor: '#680747',
+      backgroundColor: 'black'
     },
     ButtonsContainer: {
       display: 'flex',
@@ -70,7 +71,14 @@ const useStyles = makeStyles(
       alignItems: 'center',
       marginTop: 20,
     },
-    loginButton: {},
+    loginButton: { backgroundColor: 'grey',
+      width: '100%',
+      padding: 15,
+      borderRadius: 10,
+      alignItems: 'center',
+      marginTop: 20,
+      color: 'white'
+    },
   }),
   { name: 'App' }
 )
@@ -199,8 +207,8 @@ const RegisterScreen = () => {
           justifyContent: 'center',
         }}
       >
-        <text style = {{color:'white'}}>Already have an account?</text>
-        <Button className={classes.registerButton} href="/auth/Login">
+        <div style = {{color:'white'}}>Already have an account?</div>
+        <Button className={classes.loginButton} href="/auth/Login">
           Login
         </Button>
       </div>

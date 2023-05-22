@@ -1,9 +1,9 @@
-import { makeStyles } from "@material-ui/core"
-import { Auth, getAuth } from "firebase/auth"
+import { makeStyles } from '@material-ui/core'
+import { Auth, getAuth } from 'firebase/auth'
 
 const useStyles = makeStyles(
   theme => ({
-    root: {},
+    root: { backgroundColor: '' },
     menuContainer: {
       display: 'flex',
       flexDirection: 'column',
@@ -15,37 +15,45 @@ const useStyles = makeStyles(
       borderColor: 'black ',
       borderWidth: 1,
       borderBottomStyle: 'solid',
-      
-      opacity: '100'
+
+      opacity: '100',
     },
     ArrowBackIcon: {
       color: '#1a0dab',
       width: '50px',
       height: '50px',
       borderBottomColor: '#1a0dab',
-      borderBottomStyle: 'solid'
-
+      borderBottomStyle: 'solid',
     },
     componentContainer: {
-      display: 'flex', 
+      display: 'flex',
       // position: 'absolute',
       flexDirection: 'column',
       width: '90vw',
       height: '82vh',
-      backgroundColor: 'white'
-
+      backgroundColor: 'black',
     },
     settingsHeader: {
-alignSelf: 'center',
-fontWeight: 'bold',
-fontSize: '32px',
-    }
+      alignSelf: 'center',
+      fontWeight: 'bold',
+      fontSize: '32px',
+    },
   }),
   { name: 'Home' }
 )
 const HomeScreen = () => {
   const auth = getAuth()
   const classes = useStyles()
-  return <div className={classes.componentContainer}><text>Welcome {auth.currentUser.displayName ? auth.currentUser.displayName.split(' ')[0]: null}! </text></div>
+  return (
+    <div className={classes.root}>
+    
+      <div className={classes.componentContainer}>
+        <text style = {{color: 'white'}}>
+          Welcome {auth.currentUser.displayName ? auth.currentUser.displayName.split(' ')[0] : null}
+          !
+        </text>
+      </div>
+    </div>
+  )
 }
 export default HomeScreen
