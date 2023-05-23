@@ -38,11 +38,11 @@ def processjson():
 
 
 
-@app.route('/api')
-def api():
-    with open('data.json', mode='r') as my_file:
-        text = my_file.read()
-        return text
+# @app.route('/api')
+# def api():
+#     with open('data.json', mode='r') as my_file:
+#         text = my_file.read()
+#         return text
     
 if __name__ == "__main__":
     app.run(host='localhost', port=9874)

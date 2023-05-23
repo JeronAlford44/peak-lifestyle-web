@@ -168,7 +168,7 @@ const ChatScreen = e => {
     await fetch('http://localhost:3001/', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ date: currInput }),
+      body: JSON.stringify({ [date]: currInput }),
     }).catch(error => console.log('error 1: ', error))
     await setDoc(chatDocRef, { info: { ChatLogs: newChatLogs } }, { merge: true }).then(() =>
       setCurrInput('')
