@@ -163,13 +163,16 @@ const ChatScreen = e => {
     }
 
     const chatDocRef = doc(dbh, 'Users', auth.currentUser.uid)
+    
+    // await fetch('/users', {method: 'POST', body: JSON.stringify({Test: newChatLogs})}).catch(error => console.log(error))
+    await fetch('http://localhost:3001/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ date: currInput }),
+    }).catch(error => console.log('error 1: ', error))
     await setDoc(chatDocRef, { info: { ChatLogs: newChatLogs } }, { merge: true }).then(() =>
       setCurrInput('')
     )
-    // await fetch('/users', {method: 'POST', body: JSON.stringify({Test: newChatLogs})}).catch(error => console.log(error))
-    await fetch('http://127.0.0.1:5000/processjson', { method: 'POST', body: 'Test' })
-      .catch(error => console.log('error 1: ', error))
-     
     // handleChatbotReq()
   }
   return (
