@@ -24,5 +24,4 @@ yarn-error.log*
 
 #python auth
 peak-lifestyle-web-firebase-adminsdk-fev4n-c7253ed4b0.json
-
-/src/firebaseConfig.ts
+src/firebaseConfig.ts
