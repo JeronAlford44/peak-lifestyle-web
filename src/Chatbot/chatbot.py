@@ -13,7 +13,7 @@ import asyncio
 
 
 #ONLY ADMIN can access this credential object
-cred = credentials.Certificate("../../../peak-lifestyle-web-firebase-adminsdk-fev4n-c7253ed4b0.json") 
+cred = credentials.Certificate("../../peak-lifestyle-web-firebase-adminsdk-fev4n-c7253ed4b0.json") 
 
 firebase_admin.initialize_app(cred)
 db = firestore.client()
