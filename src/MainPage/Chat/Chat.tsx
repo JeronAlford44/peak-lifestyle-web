@@ -163,13 +163,49 @@ const ChatScreen = e => {
     }
 
     const chatDocRef = doc(dbh, 'Users', auth.currentUser.uid)
-    
+
     // await fetch('/users', {method: 'POST', body: JSON.stringify({Test: newChatLogs})}).catch(error => console.log(error))
-    await fetch('http://localhost:3001/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ [date]: currInput }),
-    }).catch(error => console.log('error 1: ', error))
+    async function postData() {
+      try {
+        const response = await fetch('http://localhost:3001/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ uid: auth.currentUser.uid, ChatLog: { [date]: currInput } }),
+        })
+
+        if (!response.ok) {
+          throw new Error('Request failed with status ' + response.status)
+        }
+        else {
+          console.log("POST REQUEST SUCCESS")
+        }
+
+        const data = await response.json()
+        console.log(data)
+      } catch (error) {
+        console.log('error: ', error)
+      }
+    }
+
+    await postData().catch(error => console.log('error 1: ', error))
+    const getData = async() => {
+      try {
+        const response = await fetch('http://localhost:3001/')
+
+        if (!response.ok) {
+          throw new Error('Request failed with status ' + response.status)
+        }
+        else {
+          console.log("GET REQUEST SUCCESS")
+        }
+
+        const data = await response.json()
+        console.log(data)
+      } catch (error) {
+        console.log('error: ', error)
+      }
+    }
+    await getData().catch(error => console.log(error))
     await setDoc(chatDocRef, { info: { ChatLogs: newChatLogs } }, { merge: true }).then(() =>
       setCurrInput('')
     )
