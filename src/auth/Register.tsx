@@ -101,7 +101,7 @@ const RegisterScreen = () => {
 
   const handleRegister = async() => {
     console.log(user.password, user.retypePassword)
-    console.log(auth.currentUser.uid)
+   
     if (user.password !== user.retypePassword) {
       alert('Passwords do not match')
     } else {
