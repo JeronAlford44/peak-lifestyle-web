@@ -169,10 +169,7 @@ const ChatScreen = e => {
       try {
         const response = await fetch(
           `https://flask-vercel-api-zeta.vercel.app/users/id=${auth.currentUser.uid}/msg=${currInput}`,
-          {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-          }
+          
         )
 
         if (!response.ok) {
