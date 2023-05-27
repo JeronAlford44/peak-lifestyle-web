@@ -165,19 +165,20 @@ const ChatScreen = e => {
     const chatDocRef = doc(dbh, 'Users', auth.currentUser.uid)
 
     // await fetch('/users', {method: 'POST', body: JSON.stringify({Test: newChatLogs})}).catch(error => console.log(error))
-    async function postData() {
+    async function PushData() {
       try {
-        const response = await fetch('http://localhost:3001/', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ uid: auth.currentUser.uid, ChatLog: { [date]: currInput } }),
-        })
+        const response = await fetch(
+          `https://flask-vercel-api-zeta.vercel.app/users/id=${auth.currentUser.uid}/msg=${currInput}`,
+          {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+          }
+        )
 
         if (!response.ok) {
           throw new Error('Request failed with status ' + response.status)
-        }
-        else {
-          console.log("POST REQUEST SUCCESS")
+        } else {
+          console.log('PUSH-TEXT REQUEST SUCCESS')
         }
 
         const data = await response.json()
@@ -187,28 +188,30 @@ const ChatScreen = e => {
       }
     }
 
-    await postData().catch(error => console.log('error 1: ', error))
-    const getData = async() => {
-      try {
-        const response = await fetch('http://localhost:3001/')
+    await PushData()
+      .then(() => setCurrInput(''))
+      .catch(error => console.log('error 1: ', error))
+    // const getData = async() => {
+    //   try {
+    //     const response = await fetch('https://flask-vercel-api-zeta.vercel.app', {
+    //       headers: { 'Content-Type': 'application/json' },
+    //     })
 
-        if (!response.ok) {
-          throw new Error('Request failed with status ' + response.status)
-        }
-        else {
-          console.log("GET REQUEST SUCCESS")
-        }
+    //     if (!response.ok) {
+    //       throw new Error('Request failed with status ' + response.status)
+    //     }
+    //     else {
+    //       console.log("GET-TEXT REQUEST SUCCESS")
+    //     }
 
-        const data = await response.json()
-        console.log(data)
-      } catch (error) {
-        console.log('error: ', error)
-      }
-    }
-    await getData().catch(error => console.log(error))
-    await setDoc(chatDocRef, { info: { ChatLogs: newChatLogs } }, { merge: true }).then(() =>
-      setCurrInput('')
-    )
+    //     const data = await response.json().then(res => console.log(res))
+    //     console.log(data)
+    //   } catch (error) {
+    //     console.log('error: ', error)
+    //   }
+    // }
+    // await getData().catch(error => console.log(error))
+    await setDoc(chatDocRef, { info: { ChatLogs: newChatLogs } }, { merge: true })
     // handleChatbotReq()
   }
   return (
