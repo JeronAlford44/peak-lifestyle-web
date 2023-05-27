@@ -23,7 +23,7 @@ const useStyles = makeStyles(
       // alignItems: 'center',
       margin: theme.spacing(3),
       //backgroundColor: '#680747',
-      backgroundColor: 'black'
+      backgroundColor: 'black',
     },
     ButtonsContainer: {
       display: 'flex',
@@ -71,18 +71,19 @@ const useStyles = makeStyles(
       alignItems: 'center',
       marginTop: 20,
     },
-    loginButton: { backgroundColor: 'grey',
+    loginButton: {
+      backgroundColor: 'grey',
       width: '100%',
       padding: 15,
       borderRadius: 10,
       alignItems: 'center',
       marginTop: 20,
-      color: 'white'
+      color: 'white',
     },
   }),
   { name: 'App' }
 )
-var finalUser;
+var finalUser
 const RegisterScreen = () => {
   const navigate = useNavigate()
 
@@ -99,9 +100,9 @@ const RegisterScreen = () => {
     retypePassword: '',
   })
 
-  const handleRegister = async() => {
+  const handleRegister = async () => {
     console.log(user.password, user.retypePassword)
-   
+
     if (user.password !== user.retypePassword) {
       alert('Passwords do not match')
     } else {
@@ -111,24 +112,23 @@ const RegisterScreen = () => {
           console.log(newUser)
           finalUser = newUser
           updateProfile(auth.currentUser, {
-            displayName: user.name 
+            displayName: user.name,
+          }).then(async () => {
+            await setDoc(doc(dbh, 'Users', auth.currentUser.uid), {
+              info: {
+                name: user.name,
+                email: user.email,
+                RegisterDate: new Date().valueOf(),
+                ChatLogs: {
+                  LogDate: 'user text will go here',
+                },
+              },
+            })
 
-          }).then(async()=>{
-            await setDoc(doc(dbh, "Users", auth.currentUser.uid), {info: {
-              name: user.name,
-              email: user.email,
-              RegisterDate: new Date().valueOf(),
-              ChatLogs: {
-                LogDate: 'user text will go here'
-              }
-            }
-          
-          });
-            
             console.log('Logged in with:', newUser.email)
             console.log('Welcome', newUser.displayName)
           })
-          
+
           //console.log('Phone Number:', newUser.phoneNumber)
         })
         .then(() => {
@@ -207,7 +207,7 @@ const RegisterScreen = () => {
           justifyContent: 'center',
         }}
       >
-        <div style = {{color:'white'}}>Already have an account?</div>
+        <div style={{ color: 'white' }}>Already have an account?</div>
         <Button className={classes.loginButton} href="/auth/Login">
           Login
         </Button>
@@ -217,4 +217,4 @@ const RegisterScreen = () => {
 }
 
 export default RegisterScreen
-export {finalUser}
+export { finalUser }
