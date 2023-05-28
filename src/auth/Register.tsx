@@ -101,7 +101,7 @@ const RegisterScreen = () => {
   })
 
   const handleRegister = async () => {
-    console.log(user.password, user.retypePassword)
+    // console.log(user.password, user.retypePassword)
 
     if (user.password !== user.retypePassword) {
       alert('Passwords do not match')
@@ -120,16 +120,16 @@ const RegisterScreen = () => {
                 email: user.email,
                 RegisterDate: new Date().valueOf(),
                 ChatLogs: {
-                  LogDate: 'user text will go here',
+                  ['Text']: 'firestoreTimestamp',
                 },
               },
             })
 
-            console.log('Logged in with:', newUser.email)
-            console.log('Welcome', newUser.displayName)
+            // console.log('Logged in with:', newUser.email)
+            // console.log('Welcome', newUser.displayName)
           })
 
-          //console.log('Phone Number:', newUser.phoneNumber)
+      
         })
         .then(() => {
           navigate('/home')
@@ -145,19 +145,6 @@ const RegisterScreen = () => {
     ['password', 'confirm password'],
   ]
   const classes = useStyles()
-  // const {name, setName} = useState('')
-  // const {email, setEmail} = useState('')
-  // const {password, setPassword} = useState('')
-
-  //   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, prop : string) => {
-  //     const { name, value } = e.target
-  //     setUser(prevUser => ({
-  //       ...prevUser,
-  //       [name]: value,
-  //     }))
-  //     return prop
-  //   }
-  // const [givenInfo, setGivenInfo] = useState<string>('');
 
   return (
     <div className={classes.root}>
@@ -171,7 +158,7 @@ const RegisterScreen = () => {
                 placeholder={`${component[1]}`}
                 onChange={text => {
                   if (component[1] === 'confirm password') {
-                    console.log(component)
+                    // console.log(component)
                     setUser(prevInfo => ({ ...prevInfo, retypePassword: text.target.value }))
                   } else {
                     setUser(prevInfo => ({

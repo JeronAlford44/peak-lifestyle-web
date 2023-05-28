@@ -8,8 +8,6 @@ import { getFirestore } from 'firebase/firestore'
 import { getDoc } from 'firebase/firestore'
 
 import SendIcon from '@mui/icons-material/Send'
-import handleChatbotReq from '../../Chatbot/chatbot'
-import { error } from 'console'
 
 const useStyles = makeStyles(
   theme => ({
@@ -162,14 +160,10 @@ const ChatScreen = e => {
       [date]: currInput,
     }
 
-    const chatDocRef = doc(dbh, 'Users', auth.currentUser.uid)
-
-    // await fetch('/users', {method: 'POST', body: JSON.stringify({Test: newChatLogs})}).catch(error => console.log(error))
     async function PushData() {
       try {
         const response = await fetch(
-          `https://flask-vercel-api-zeta.vercel.app/users/id=${auth.currentUser.uid}/msg=${currInput}`,
-          
+          `https://flask-vercel-api-zeta.vercel.app/users/id=${auth.currentUser.uid}/msg=${currInput}`
         )
 
         if (!response.ok) {
@@ -188,28 +182,7 @@ const ChatScreen = e => {
     await PushData()
       .then(() => setCurrInput(''))
       .catch(error => console.log('error 1: ', error))
-    // const getData = async() => {
-    //   try {
-    //     const response = await fetch('https://flask-vercel-api-zeta.vercel.app', {
-    //       headers: { 'Content-Type': 'application/json' },
-    //     })
-
-    //     if (!response.ok) {
-    //       throw new Error('Request failed with status ' + response.status)
-    //     }
-    //     else {
-    //       console.log("GET-TEXT REQUEST SUCCESS")
-    //     }
-
-    //     const data = await response.json().then(res => console.log(res))
-    //     console.log(data)
-    //   } catch (error) {
-    //     console.log('error: ', error)
-    //   }
-    // }
-    // await getData().catch(error => console.log(error))
-    await setDoc(chatDocRef, { info: { ChatLogs: newChatLogs } }, { merge: true })
-    // handleChatbotReq()
+    const getData = async () => {}
   }
   return (
     <div>

@@ -85,20 +85,7 @@ const useStyles = makeStyles(
 const LoginScreen = () => {
   const navigate = useNavigate()
   
-//   useEffect(() => {
-    
-//     const unsubscribe = auth.onAuthStateChanged(user => {
-//      if (user) {
-//        console.log('tried')
-//        console.log('User detected.')
-//        //WHY IS ROUTES NOT POPPING UP?
-//        //WHY IS useEffect NOT WORKING?
-//        navigate('/home')
-       
-//      } 
-//    })
-//    return unsubscribe
-//  },[navigate]);
+
   
  
   interface RegisterUser {
@@ -119,7 +106,7 @@ const handleLogin = () =>{
  
   signInWithEmailAndPassword(auth, user.email, user.password).then(userCredentials => {
         console.log('logged in')
-        //console.log('Phone Number:', newUser.phoneNumber)
+
       }).then(()=> {navigate('/home')})
       .catch(error => alert(error.message))
     
@@ -134,20 +121,7 @@ const handleLogin = () =>{
     
   ]
   const classes = useStyles()
-  // const {name, setName} = useState('')
-  // const {email, setEmail} = useState('')
-  // const {password, setPassword} = useState('')
-  
 
-//   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, prop : string) => {
-//     const { name, value } = e.target
-//     setUser(prevUser => ({
-//       ...prevUser,
-//       [name]: value,
-//     }))
-//     return prop
-//   }
-  // const [givenInfo, setGivenInfo] = useState<string>('');
   
   return (
     <div className={classes.root}>
