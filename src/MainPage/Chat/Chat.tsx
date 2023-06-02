@@ -8,6 +8,7 @@ import { getFirestore } from 'firebase/firestore'
 import { getDoc } from 'firebase/firestore'
 
 import SendIcon from '@mui/icons-material/Send'
+import { METHODS } from 'http'
 
 const useStyles = makeStyles(
   theme => ({
@@ -45,27 +46,34 @@ const useStyles = makeStyles(
     inputBarContainer: {
       flexDirection: 'row',
 
-      backgroundColor: '#680747',
+      // backgroundColor: '#680747',
+      backgroundColor: 'transparent',
+      borderColor: 'grey',
+      borderStyle: 'solid',
+      borderRadius: '16px',
     },
     inputBar: {
       padding: '3px',
       fontSize: '14px',
       // fontFamily: 'Courier',
       borderColor: 'transparent',
-      borderWidth: '5px',
+      borderWidth: '1px',
       width: '60vw',
       height: '5vh',
+      backgroundColor: 'transparent',
+
+      color: 'grey',
 
       // flexWrap: 'wrap',
 
-      margin: '20px',
+      margin: '5px',
     },
     chatContainer: {
       display: 'flex',
       backgroundColor: 'black',
       maxHeight: '73vh',
       maxWidth: '90vw',
-      height: '73vh',
+      height: '75vh',
       width: '90vw',
 
       flexDirection: 'column',
@@ -110,13 +118,13 @@ const ChatScreen = e => {
   const db = getFirestore(app)
   const [userInput, setUserInput] = useState(['Hello', 'World'])
   const classes = useStyles()
-  const [botInput, setBotInput] = useState(['welcome!', 'how are you today?'])
-  const [botsTurn, setBotsTurn] = useState<boolean>(true)
+
   const [Greetings, setGreetings] = useState<item[]>([])
 
   const [currInput, setCurrInput] = useState('')
 
   useEffect(() => {
+    // FUNCTION TO RETRIEVE GREETINGS
     const retrieveData = async () => {
       const coll = collection(dbh, 'greetings')
       const querySnapshot = await getDocs(coll)
@@ -143,6 +151,7 @@ const ChatScreen = e => {
   }
 
   useEffect(() => {
+    //DEVELPOER FUNCTION TO GET ALL GREETINGS
     const printGreetings = () => {
       Greetings.forEach(element => {
         console.log('Text:', element.text)
@@ -162,39 +171,78 @@ const ChatScreen = e => {
 
     async function PushData() {
       try {
-        const response = await fetch(
-          `https://flask-vercel-api-zeta.vercel.app/users/id=${auth.currentUser.uid}/msg=${currInput}`
-        )
-
-        if (!response.ok) {
-          throw new Error('Request failed with status ' + response.status)
-        } else {
-          console.log('PUSH-TEXT REQUEST SUCCESS')
+        const POST_MSG_TO_API = () => {
+         const response =  fetch(
+            // `https://flask-vercel-api-zeta.vercel.app/users/id=${auth.currentUser.uid}/msg=${currInput}`
+            'https://test-pwa-lac.vercel.app/push',
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                msg: currInput,
+                name: auth.currentUser.displayName,
+                id: auth.currentUser.uid,
+              }),
+            }
+          )
+        return response
         }
+        const POST_MSG_TO_DB = () => {
+          const date = new Date().valueOf()
+          const doc_ref = doc(db, 'Users', auth.currentUser.uid)
+          updateDoc(doc_ref, {
+            
+            [`info.ChatLogs.${date}`]: currInput,
+          })
 
-        const data = await response.json()
-        console.log(data)
+        }
+        // https://test-pwa-lac.vercel.app/push
+      
+        const [POST_MSG_TO_API_CALLBACK, POST_MSG_TO_DB_CALLBACK] = await Promise.allSettled([POST_MSG_TO_API(), POST_MSG_TO_DB()])
+        console.log(POST_MSG_TO_API_CALLBACK.status)
+        console.log(POST_MSG_TO_DB_CALLBACK.status)
+        // if (!POST_MSG_TO_API_CALLBACK.ok) {
+        //   throw new Error('Request failed with status ' + response.status)
+        // } else {
+        //   console.log('PUSH REQUEST SUCCESS')
+        // }
+
+        // const data = await response.json()
+        // console.log(data)
       } catch (error) {
-        console.log('error: ', error)
+        console.log(error)
+        alert(error)
+
       }
     }
 
     await PushData()
       .then(() => setCurrInput(''))
       .catch(error => console.log('error 1: ', error))
-    const getData = async () => {}
+   
   }
   return (
     <div>
       <div className={classes.chatContainer}>
-        {[...Greetings].map(word => {
+        {[...Greetings].map((word, idx) => {
+          if (idx >= 1) {
+            return
+          }
           if (word.text !== '') {
-            return <div className={classes.chatBotBubble}>{word.text}</div>
+            return (
+              <div key={idx} className={classes.chatBotBubble}>
+                {word.text}
+              </div>
+            )
           }
         })}
-        {[...userInput].map(word => {
+        {[...userInput].map((word, idx) => {
           if (word !== '') {
-            return <div className={classes.chatUserBubble}>{word}</div>
+            return (
+              <div key={idx} className={classes.chatUserBubble}>
+                {word}
+              </div>
+            )
           }
         })}
       </div>
@@ -206,10 +254,6 @@ const ChatScreen = e => {
           autoCorrect="false"
           autoComplete="off"
           onChange={e => {
-            console.log('greetings', Greetings)
-
-            console.log(e.target.value)
-            console.log(userInput)
             setCurrInput(e.target.value)
           }}
           onKeyDown={e => {
@@ -217,13 +261,13 @@ const ChatScreen = e => {
               updateTextFieldUser()
             }
           }}
+          placeholder="Message"
         ></input>
         <button
           style={{
             backgroundColor: 'transparent',
             borderColor: 'transparent',
             position: 'relative',
-            top: '15px',
           }}
           onClick={updateTextFieldUser}
         >

@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core'
 import { BottomNavigation, BottomNavigationAction } from '@material-ui/core'
 import HomeIcon from '@mui/icons-material/Home'
@@ -38,10 +38,33 @@ const AppContainer = (props: any) => {
   const navigate = useNavigate()
   const classes = useStyles(props)
   const [value, setValue] = React.useState(0)
+  const handlePathName = () => {
+     const loc = useLocation().pathname.replace('/', '').toUpperCase()
+     console.log(loc)
+     if (loc.startsWith('SETTINGS/')){
+      console.log('is true')
+      return useLocation().pathname.replace('/', '').toUpperCase().replace('SETTINGS/',"")
+     }
+    return loc
+  }
 
   return (
     <div className={classes.root}>
-      <div style ={{borderTopColor: 'transparent',borderLeftColor: 'transparent', borderRightColor: 'transparent', borderBottomColor: 'grey !important', borderStyle: 'solid', marginBottom: '2vh'}}>APP CONTAINER HEADER</div>
+      <div
+        style={{
+          borderTopColor: 'transparent',
+          borderLeftColor: 'transparent',
+          borderRightColor: 'transparent',
+          borderBottomColor: 'grey !important',
+          borderStyle: 'solid',
+          marginBottom: '2vh',
+          
+          textAlign: 'center',
+          // background: 'linear-gradient(90deg, #B2BEB5 30%, #A9A9A9 90%)',
+        }}
+      >
+        {handlePathName()}
+      </div>
 
       <Outlet />
       <BottomNavigation
@@ -49,6 +72,7 @@ const AppContainer = (props: any) => {
         showLabels
         value={value}
         onChange={(event, newValue) => {
+          console.log(newValue)
           setValue(newValue)
         }}
       >

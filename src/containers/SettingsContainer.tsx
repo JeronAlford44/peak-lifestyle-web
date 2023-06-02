@@ -109,7 +109,7 @@ export default function SettingsContainer(props) {
 
   return (
     <div className={classes.componentContainer}>
-      {menuOpen ? <div className={classes.settingsHeader}>Settings</div> : null}
+      {/* {menuOpen ? <div className={classes.settingsHeader}>Settings</div> : null} */}
       {!menuOpen ? (
         <div style = {{display: 'flex', flexDirection:'row'}}>
           <ArrowBackIosIcon
