@@ -163,7 +163,7 @@ const ChatScreen = e => {
     setUserInput(prevInput => {
       return [...prevInput, currInput]
     })
-    const [jsonResponse, setJsonResponse] = useState('')
+  
 
     // const date = new Date().valueOf()
     // const newChatLogs = {
