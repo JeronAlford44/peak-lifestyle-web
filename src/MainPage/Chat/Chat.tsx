@@ -185,7 +185,7 @@ const ChatScreen = e => {
               }),
             }
           )
-        return response
+        console.log(response)
         }
         const POST_MSG_TO_DB = () => {
           const date = new Date().valueOf()
