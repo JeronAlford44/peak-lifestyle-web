@@ -163,11 +163,12 @@ const ChatScreen = e => {
     setUserInput(prevInput => {
       return [...prevInput, currInput]
     })
+    const [jsonResponse, setJsonResponse] = useState('')
 
-    const date = new Date().valueOf()
-    const newChatLogs = {
-      [date]: currInput,
-    }
+    // const date = new Date().valueOf()
+    // const newChatLogs = {
+    //   [date]: currInput,
+    // }
 
     async function PushData() {
       try {
@@ -186,6 +187,7 @@ const ChatScreen = e => {
             }
           )
         console.log(response)
+        
         }
         const POST_MSG_TO_DB = () => {
           const date = new Date().valueOf()
@@ -218,7 +220,7 @@ const ChatScreen = e => {
 
     await PushData()
       .then(() => setCurrInput(''))
-      .catch(error => console.log('error 1: ', error))
+      .catch(error => alert(error))
    
   }
   return (
