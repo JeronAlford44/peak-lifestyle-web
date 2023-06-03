@@ -122,6 +122,7 @@ const ChatScreen = e => {
   const [Greetings, setGreetings] = useState<item[]>([])
 
   const [currInput, setCurrInput] = useState('')
+  const [RECEIVED_MSG, setRECEIVED_MSG] = useState<string>('')
 
   useEffect(() => {
     // FUNCTION TO RETRIEVE GREETINGS
@@ -185,8 +186,9 @@ const ChatScreen = e => {
                 id: auth.currentUser.uid,
               }),
             }
-          )
-        console.log(response)
+          ).then(data => data.json()).then(res => setRECEIVED_MSG(res.data))
+          // Need to get response to then update UI
+        console.log(RECEIVED_MSG)
         
         }
         const POST_MSG_TO_DB = () => {
