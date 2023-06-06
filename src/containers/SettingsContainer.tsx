@@ -32,7 +32,6 @@ const useStyles = makeStyles(
       position: 'absolute',
       marginTop: '5vh',
       overflowY: 'scroll',
-      
     },
     tool: {
       backgroundColor: 'transparent',
@@ -69,15 +68,15 @@ const useStyles = makeStyles(
     menuBar: {
       display: 'flex',
       flexDirection: 'row',
-      borderColor: 'grey',
+      borderColor: 'white',
       borderLeftColor: 'transparent',
       borderRadius: '16px',
       borderTopLeftRadius: '0px',
       borderBottomLeftRadius: '0px',
       borderStyle: 'solid',
       width: '80vw',
-      marginTop: '5px',
-      backgroundColor: '#680747',
+      borderBottomColor: 'transparent',
+      backgroundColor: '#202020',
     },
   }),
   { name: 'Settings' }
@@ -87,6 +86,7 @@ export default function SettingsContainer(props) {
   const classes = useStyles(props)
   const navigate = useNavigate()
   const [menuOpen, setMenuOpen] = useState(true)
+  
 
   //['Progress', 'Notifications','Display Options', 'Verify Email', 'Reset Password', 'About', 'Log Out']
   const elements = [
