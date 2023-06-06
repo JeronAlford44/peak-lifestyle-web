@@ -31,6 +31,8 @@ const useStyles = makeStyles(
       flexDirection: 'column',
       position: 'absolute',
       marginTop: '5vh',
+      overflowY: 'scroll',
+      
     },
     tool: {
       backgroundColor: 'transparent',
@@ -102,10 +104,6 @@ export default function SettingsContainer(props) {
 
   // Using a function as state
   // https://stackoverflow.com/a/55621679
-  const [selected, setSelected] = React.useState<DisplayFunction>(() => {
-    return <AboutScreen />
-  })
-  const [currComponent, setCurrComponent] = useState('About Test')
 
   return (
     <div className={classes.componentContainer}>
@@ -127,18 +125,17 @@ export default function SettingsContainer(props) {
           {elements.map((component: String | any, idx) => {
             console.log(component[0].toLowerCase().replaceAll(' ', '-'))
             return (
-              <div className={classes.menuBar}>
+              <div className={classes.menuBar} key={idx}>
                 <div
                   className={classes.tool}
                   onClick={() => {
                     navigate(`/settings/${component[0].toLowerCase().replaceAll(' ', '-')}`)
-                    console.log('checked')
-                    console.log('menuopen:', menuOpen)
+                  
                     setMenuOpen(false)
                   }}
                 >
                   <Toolbar style={{ color: 'white' }}>
-                    <text>{component[0]}</text>
+                    <div>{component[0]}</div>
                   </Toolbar>
                 </div>
                 <ArrowForwardIosIcon

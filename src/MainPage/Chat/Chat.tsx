@@ -116,55 +116,82 @@ const useStyles = makeStyles(
 
 const ChatScreen = e => {
   const db = getFirestore(app)
-  const [userInput, setUserInput] = useState(['Hello', 'World'])
+  const [userInput, setUserInput] = useState<string>('')
   const classes = useStyles()
 
   const [Greetings, setGreetings] = useState<item[]>([])
 
   const [currInput, setCurrInput] = useState('')
-  const [RECEIVED_MSG, setRECEIVED_MSG] = useState<string>('')
+  const [RECEIVED_MSG, setRECEIVED_MSG] = useState<any>({msg: "Hello, I am your chatbot assistant, here to help you accomplish your goals."})
 
   useEffect(() => {
-    // FUNCTION TO RETRIEVE GREETINGS
-    const retrieveData = async () => {
-      const coll = collection(dbh, 'greetings')
-      const querySnapshot = await getDocs(coll)
-      const newGreetings = []
-      querySnapshot.forEach(async doc => {
-        console.log(doc.id, ' => ', doc)
-        const data = doc.data()
+    //RECEIVED_MSG.msg is the path to get a message from a python backend JSON response
+      if (RECEIVED_MSG.msg != undefined && RECEIVED_MSG.msg != null && RECEIVED_MSG.msg != '')
+      {
+        //When the value of RECEIVED_MSG is updated, the message is updated to cloud firestore db and is displayed on left side of chat screen
+        console.log(RECEIVED_MSG.msg)
+    const date = new Date().valueOf()
+    const doc_ref = doc(db, 'Users', auth.currentUser.uid)
+    updateDoc(doc_ref, {
+      [`info.ChatLogs.${date}`]: { System: RECEIVED_MSG },
+    })
+    const TEXT_ELEMENT = document.createElement('div')
+    TEXT_ELEMENT.className += classes.chatBotBubble
+    const node = document.createTextNode(RECEIVED_MSG.msg)
+    TEXT_ELEMENT.appendChild(node)
+    
+    
 
-        const item = {
-          id: doc.id,
-          text: data.text,
-        }
-        newGreetings.push(item)
-      })
+    const element = document.getElementById('ChatContainer')
+    element.appendChild(TEXT_ELEMENT)
+  }
+  }, [RECEIVED_MSG])
 
-      setGreetings(newGreetings)
+  useEffect(() => {
+    if (userInput != undefined && userInput != null && userInput != '')
+    {
+      //When the value of userInput is updated, the message is updated to cloud firestore db from a separate fetch request on line 211 and is displayed on right side of chat screen
+      //for chat messages dispayed on right side of the screen
+      const TEXT_ELEMENT = document.createElement('div')
+      TEXT_ELEMENT.className += classes.chatUserBubble
+      const node = document.createTextNode(userInput)
+      TEXT_ELEMENT.appendChild(node)
+
+      const element = document.getElementById('ChatContainer')
+      element.appendChild(TEXT_ELEMENT)
     }
+  }, [userInput])
 
-    retrieveData()
-  }, [])
+  // useEffect(() => {
+  //   // FUNCTION TO RETRIEVE GREETINGS
+  //   const retrieveData = async () => {
+  //     const coll = collection(dbh, 'greetings')
+  //     const querySnapshot = await getDocs(coll)
+  //     const newGreetings = []
+  //     querySnapshot.forEach(async doc => {
+  //       console.log(doc.id, ' => ', doc)
+  //       const data = doc.data()
+
+  //       const item = {
+  //         id: doc.id,
+  //         text: data.text,
+  //       }
+  //       newGreetings.push(item)
+  //     })
+
+  //     setGreetings(newGreetings)
+  //   }
+
+  //   retrieveData()
+  // }, [])
   interface item {
     id: string
     text: string
   }
 
-  useEffect(() => {
-    //DEVELPOER FUNCTION TO GET ALL GREETINGS
-    const printGreetings = () => {
-      Greetings.forEach(element => {
-        console.log('Text:', element.text)
-      })
-    }
-    printGreetings()
-  }, [Greetings])
-  const updateTextFieldUser = async () => {
-    setUserInput(prevInput => {
-      return [...prevInput, currInput]
-    })
   
+  const updateTextFieldUser = async () => {
+    setUserInput(currInput)
 
     // const date = new Date().valueOf()
     // const newChatLogs = {
@@ -173,8 +200,8 @@ const ChatScreen = e => {
 
     async function PushData() {
       try {
-        const POST_MSG_TO_API = () => {
-         const response =  fetch(
+        const POST_MSG_TO_API = async () => {
+          const response = await fetch(
             // `https://flask-vercel-api-zeta.vercel.app/users/id=${auth.currentUser.uid}/msg=${currInput}`
             'https://test-pwa-lac.vercel.app/push',
             {
@@ -186,23 +213,26 @@ const ChatScreen = e => {
                 id: auth.currentUser.uid,
               }),
             }
-          ).then(data => data.json()).then(res => setRECEIVED_MSG(res.data))
-          // Need to get response to then update UI
-        console.log(RECEIVED_MSG)
-        
+          )
+            .then(data => data.json())
+            .then(res => {
+              setRECEIVED_MSG(res)
+            })
+          //POST RESPONCE TO DB
         }
-        const POST_MSG_TO_DB = () => {
+        const POST_MSG_TO_DB = async () => {
           const date = new Date().valueOf()
-          const doc_ref = doc(db, 'Users', auth.currentUser.uid)
+          const doc_ref = await doc(db, 'Users', auth.currentUser.uid)
           updateDoc(doc_ref, {
-            
-            [`info.ChatLogs.${date}`]: currInput,
+            [`info.ChatLogs.${date}`]: { User: currInput },
           })
-
         }
         // https://test-pwa-lac.vercel.app/push
-      
-        const [POST_MSG_TO_API_CALLBACK, POST_MSG_TO_DB_CALLBACK] = await Promise.allSettled([POST_MSG_TO_API(), POST_MSG_TO_DB()])
+
+        const [POST_MSG_TO_API_CALLBACK, POST_MSG_TO_DB_CALLBACK] = await Promise.allSettled([
+          POST_MSG_TO_API(),
+          POST_MSG_TO_DB(),
+        ])
         console.log(POST_MSG_TO_API_CALLBACK.status)
         console.log(POST_MSG_TO_DB_CALLBACK.status)
         // if (!POST_MSG_TO_API_CALLBACK.ok) {
@@ -216,19 +246,17 @@ const ChatScreen = e => {
       } catch (error) {
         console.log(error)
         alert(error)
-
       }
     }
 
     await PushData()
       .then(() => setCurrInput(''))
       .catch(error => alert(error))
-   
   }
   return (
     <div>
-      <div className={classes.chatContainer}>
-        {[...Greetings].map((word, idx) => {
+      <div className={classes.chatContainer} id="ChatContainer">
+        {/* {[...Greetings].map((word, idx) => {
           if (idx >= 1) {
             return
           }
@@ -248,7 +276,7 @@ const ChatScreen = e => {
               </div>
             )
           }
-        })}
+        })} */}
       </div>
       <div className={classes.inputBarContainer}>
         <input
