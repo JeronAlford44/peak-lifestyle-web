@@ -4,20 +4,22 @@ import AuthContainer from './containers/AuthContainer'
 import RegisterScreen from './auth/Register'
 import { makeStyles } from '@material-ui/core'
 import ChatScreen from './MainPage/Chat/Chat'
-import HomeScreen from './MainPage/Home/Home'
+import HomeScreen from './MainPage/Progress/Progress'
 import LoginScreen from './auth/Login'
-import AboutScreen from './MainPage/Settings/components/About'
-import DisplayScreen from './MainPage/Settings/components/Display'
-import HelpScreen from './MainPage/Settings/components/Help'
-import LogoutScreen from './MainPage/Settings/components/Logout'
-import NotificationsScreen from './MainPage/Settings/components/Notifications'
-import PasswordResetScreen from './MainPage/Settings/components/PasswordReset'
-import ProgressScreen from './MainPage/Settings/components/Progress'
-import VerifyEmailScreen from './MainPage/Settings/components/VerifyEmail'
+import AboutScreen from './MainPage/Settings/components/AboutScreen/About'
+import DisplayScreen from './MainPage/Settings/components/DisplayScreen/Display'
+import HelpScreen from './MainPage/Settings/components/HelpScreen/Help'
+import LogoutScreen from './MainPage/Settings/components/LogoutScreen/Logout'
+import NotificationsScreen from './MainPage/Settings/components/NotificationsScreen/Notifications'
+import PasswordResetScreen from './MainPage/Settings/components/PasswordResetScreen/PasswordReset'
+
+import VerifyEmailScreen from './MainPage/Settings/components/VerifyEmailScreen/VerifyEmail'
 import SettingsContainer from './containers/SettingsContainer'
-import ChangeDisplayName from './MainPage/Settings/components/ChangeDisplayName'
+import ChangeDisplayName from './MainPage/Settings/components/ChangeDisplayNameScreen/ChangeDisplayName'
 
 import { ListGreetings } from './examples/crud/ListGreetings'
+import ProfileScreen from './MainPage/Settings/components/ProfileScreen/Profile'
+import ProgressScreen from './MainPage/Progress/Progress'
 
 const useStyles = makeStyles(
   theme => ({
@@ -26,7 +28,7 @@ const useStyles = makeStyles(
       flex: 1,
       flexDirection: 'column',
       //backgroundColor: '#680747',
-      backgroundColor: 'black',
+      backgroundColor: 'white',
       zIndex: 1,
       width: '100vw',
       height: '100vh',
@@ -80,7 +82,7 @@ const App = props => {
         <Routes>
           <Route path="/" element={<Navigate to="/auth/login" replace={true} />} />
           <Route path="/" element={<AppContainer />}>
-            <Route path="home" element={<HomeScreen />} />
+            <Route path="progress" element={<ProgressScreen />} />
             <Route path="chat" element={<ChatScreen />} />
             <Route path="settings" element={<SettingsContainer />}>
               <Route path="about" element={<AboutScreen />} />
@@ -89,7 +91,7 @@ const App = props => {
               <Route path="log-out" element={<LogoutScreen />} />
               <Route path="notifications" element={<NotificationsScreen />} />
               <Route path="reset-password" element={<PasswordResetScreen />} />
-              <Route path="progress" element={<ProgressScreen />} />
+              <Route path="profile" element={<ProfileScreen />} />
               <Route path="verify-email" element={<VerifyEmailScreen />} />
               <Route path="change-display-name" element={<ChangeDisplayName />} />
             </Route>

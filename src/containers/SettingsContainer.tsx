@@ -3,14 +3,14 @@ import { useState } from 'react'
 
 import Toolbar from '@mui/material/Toolbar'
 
-import AboutScreen from '../MainPage/Settings/components/About'
-import ProgressScreen from '../MainPage/Settings/components/Progress'
-import NotificationsScreen from '../MainPage/Settings/components/Notifications'
-import VerifyEmailScreen from '../MainPage/Settings/components/VerifyEmail'
-import PasswordResetScreen from '../MainPage/Settings/components/PasswordReset'
-import HelpScreen from '../MainPage/Settings/components/Help'
-import LogoutScreen from '../MainPage/Settings/components/Logout'
-import DisplayScreen from '../MainPage/Settings/components/Display'
+import AboutScreen from '../MainPage/Settings/components/AboutScreen/About'
+import ProgressScreen from '../MainPage/Settings/components/ProfileScreen/Profile'
+import NotificationsScreen from '../MainPage/Settings/components/NotificationsScreen/Notifications'
+import VerifyEmailScreen from '../MainPage/Settings/components/VerifyEmailScreen/VerifyEmail'
+import PasswordResetScreen from '../MainPage/Settings/components/PasswordResetScreen/PasswordReset'
+import HelpScreen from '../MainPage/Settings/components/HelpScreen/Help'
+import LogoutScreen from '../MainPage/Settings/components/LogoutScreen/Logout'
+import DisplayScreen from '../MainPage/Settings/components/DisplayScreen/Display'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 
 import { makeStyles } from '@material-ui/core'
@@ -19,7 +19,7 @@ import { useNavigate } from 'react-router-dom'
 import { Outlet } from 'react-router-dom'
 import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
-import ChangeDisplayName from '../MainPage/Settings/components/ChangeDisplayName'
+import ChangeDisplayName from '../MainPage/Settings/components/ChangeDisplayNameScreen/ChangeDisplayName'
 
 const drawerWidth = 240
 
@@ -32,6 +32,7 @@ const useStyles = makeStyles(
       position: 'absolute',
       marginTop: '5vh',
       overflowY: 'scroll',
+      // borderRadius: '16px',
     },
     tool: {
       backgroundColor: 'transparent',
@@ -57,7 +58,7 @@ const useStyles = makeStyles(
       flexDirection: 'column',
       width: '90vw',
       height: '83vh',
-      backgroundColor: 'black',
+      backgroundColor: 'white',
     },
     settingsHeader: {
       alignSelf: 'center',
@@ -70,13 +71,13 @@ const useStyles = makeStyles(
       flexDirection: 'row',
       borderColor: 'white',
       borderLeftColor: 'transparent',
-      borderRadius: '16px',
-      borderTopLeftRadius: '0px',
-      borderBottomLeftRadius: '0px',
+      // borderRadius: '16px',
+      // borderTopLeftRadius: '0px',
+      // borderBottomLeftRadius: '0px',
       borderStyle: 'solid',
       width: '80vw',
       borderBottomColor: 'transparent',
-      backgroundColor: '#202020',
+      // backgroundColor: '#d1d2d1',
     },
   }),
   { name: 'Settings' }
@@ -86,21 +87,19 @@ export default function SettingsContainer(props) {
   const classes = useStyles(props)
   const navigate = useNavigate()
   const [menuOpen, setMenuOpen] = useState(true)
-  
 
   //['Progress', 'Notifications','Display Options', 'Verify Email', 'Reset Password', 'About', 'Log Out']
   const elements = [
-    ['Progress', <ProgressScreen />],
-    ['Notifications', <NotificationsScreen />],
-    ['Display Options', <DisplayScreen />],
-    ['Verify Email', <VerifyEmailScreen />],
-    ['Reset Password', <PasswordResetScreen />],
-    ['About', <AboutScreen />],
-    ['Log Out', <LogoutScreen />],
-    ['Help', <HelpScreen />],
-    ['Change Display Name', <ChangeDisplayName />],
+    'Profile',
+    'Display Options',
+    'Help',
+    'About',
+    'Notifications',
+    'Change Display Name',
+    'Verify Email',
+    'Reset Password',
+    'Log Out',
   ]
-  type DisplayFunction = () => JSX.Element
 
   // Using a function as state
   // https://stackoverflow.com/a/55621679
@@ -109,7 +108,7 @@ export default function SettingsContainer(props) {
     <div className={classes.componentContainer}>
       {/* {menuOpen ? <div className={classes.settingsHeader}>Settings</div> : null} */}
       {!menuOpen ? (
-        <div style = {{display: 'flex', flexDirection:'row'}}>
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
           <ArrowBackIosIcon
             className={classes.ArrowBackIcon}
             onClick={() => {
@@ -117,33 +116,75 @@ export default function SettingsContainer(props) {
               navigate(-1)
             }}
           />
-          <div style = {{color: '#007AFF'}}>Settings</div>
+          <div style={{ color: '#007AFF' }}>Settings</div>
         </div>
       ) : null}
       {menuOpen ? (
         <div className={classes.menuContainer}>
-          {elements.map((component: String | any, idx) => {
-            console.log(component[0].toLowerCase().replaceAll(' ', '-'))
-            return (
-              <div className={classes.menuBar} key={idx}>
-                <div
-                  className={classes.tool}
-                  onClick={() => {
-                    navigate(`/settings/${component[0].toLowerCase().replaceAll(' ', '-')}`)
-                  
-                    setMenuOpen(false)
-                  }}
-                >
-                  <Toolbar style={{ color: 'white' }}>
-                    <div>{component[0]}</div>
-                  </Toolbar>
+          <div
+            style={{
+              borderRadius: '16px',
+              marginBottom: '5vh',
+
+              backgroundColor: '#f2f2f2',
+            }}
+          >
+            {elements.slice(0, 4).map((component: String | any, idx) => {
+              // console.log(component.toLowerCase().replaceAll(' ', '-'))
+              return (
+                <div className={classes.menuBar} key={idx}>
+                  <div
+                    className={classes.tool}
+                    onClick={() => {
+                      navigate(`/settings/${component.toLowerCase().replaceAll(' ', '-')}`)
+
+                      setMenuOpen(false)
+                    }}
+                  >
+                    <Toolbar style={{ color: 'black' }}>
+                      <div>{component}</div>
+                    </Toolbar>
+                  </div>
+                  <ArrowForwardIosIcon
+                    style={{ position: 'relative', top: '17px', color: 'black' }}
+                  />
                 </div>
-                <ArrowForwardIosIcon
-                  style={{ position: 'relative', top: '17px', color: 'white' }}
-                />
-              </div>
-            )
-          })}
+              )
+            })}
+          </div>
+
+          <div>
+            <div
+              style={{
+                borderRadius: '16px',
+
+                backgroundColor: '#f2f2f2',
+              }}
+            >
+              {elements.slice(4).map((component: String | any, idx) => {
+                // console.log(component.toLowerCase().replaceAll(' ', '-'))
+                return (
+                  <div className={classes.menuBar} key={idx}>
+                    <div
+                      className={classes.tool}
+                      onClick={() => {
+                        navigate(`/settings/${component.toLowerCase().replaceAll(' ', '-')}`)
+
+                        setMenuOpen(false)
+                      }}
+                    >
+                      <Toolbar style={{ color: 'black' }}>
+                        <div>{component}</div>
+                      </Toolbar>
+                    </div>
+                    <ArrowForwardIosIcon
+                      style={{ position: 'relative', top: '17px', color: 'black' }}
+                    />
+                  </div>
+                )
+              })}
+            </div>
+          </div>
         </div>
       ) : null}
       {!menuOpen ? <Outlet /> : null}

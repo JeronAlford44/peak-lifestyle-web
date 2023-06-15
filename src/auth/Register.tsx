@@ -23,7 +23,7 @@ const useStyles = makeStyles(
       // alignItems: 'center',
       margin: theme.spacing(3),
       //backgroundColor: '#680747',
-      backgroundColor: 'black',
+      backgroundColor: '#F8AFA6',
     },
     ButtonsContainer: {
       display: 'flex',
@@ -132,7 +132,7 @@ const RegisterScreen = () => {
       
         })
         .then(() => {
-          navigate('/home')
+          navigate('/progress')
         })
         .catch(error => alert(error.message))
     }

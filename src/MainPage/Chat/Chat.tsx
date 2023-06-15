@@ -9,6 +9,7 @@ import { getDoc } from 'firebase/firestore'
 
 import SendIcon from '@mui/icons-material/Send'
 import { METHODS } from 'http'
+import IosShareIcon from '@mui/icons-material/IosShare'
 
 const useStyles = makeStyles(
   theme => ({
@@ -70,7 +71,7 @@ const useStyles = makeStyles(
     },
     chatContainer: {
       display: 'flex',
-      backgroundColor: 'black',
+      backgroundColor: 'white',
       maxHeight: '73vh',
       maxWidth: '90vw',
       height: '75vh',
@@ -86,6 +87,7 @@ const useStyles = makeStyles(
       borderRadius: '18px',
       backgroundColor: '#680747',
       flexWrap: 'wrap',
+
       maxWidth: '40vw',
       padding: '10px',
       marginRight: '5vw',
@@ -122,34 +124,30 @@ const ChatScreen = e => {
   const [Greetings, setGreetings] = useState<item[]>([])
 
   const [currInput, setCurrInput] = useState('')
-  const [RECEIVED_MSG, setRECEIVED_MSG] = useState<any>({msg: "Hello, I am your chatbot assistant, here to help you accomplish your goals."})
+  const [RECEIVED_MSG, setRECEIVED_MSG] = useState<any>({})
 
   useEffect(() => {
     //RECEIVED_MSG.msg is the path to get a message from a python backend JSON response
-      if (RECEIVED_MSG.msg != undefined && RECEIVED_MSG.msg != null && RECEIVED_MSG.msg != '')
-      {
-        //When the value of RECEIVED_MSG is updated, the message is updated to cloud firestore db and is displayed on left side of chat screen
-        console.log(RECEIVED_MSG.msg)
-    const date = new Date().valueOf()
-    const doc_ref = doc(db, 'Users', auth.currentUser.uid)
-    updateDoc(doc_ref, {
-      [`info.ChatLogs.${date}`]: { System: RECEIVED_MSG },
-    })
-    const TEXT_ELEMENT = document.createElement('div')
-    TEXT_ELEMENT.className += classes.chatBotBubble
-    const node = document.createTextNode(RECEIVED_MSG.msg)
-    TEXT_ELEMENT.appendChild(node)
-    
-    
+    if (RECEIVED_MSG.msg != undefined && RECEIVED_MSG.msg != null && RECEIVED_MSG.msg != '') {
+      //When the value of RECEIVED_MSG is updated, the message is updated to cloud firestore db and is displayed on left side of chat screen
+      console.log(RECEIVED_MSG.msg)
+      const date = new Date().valueOf()
+      const doc_ref = doc(db, 'Users', auth.currentUser.uid)
+      updateDoc(doc_ref, {
+        [`info.ChatLogs.${date}`]: { System: RECEIVED_MSG },
+      })
+      const TEXT_ELEMENT = document.createElement('div')
+      TEXT_ELEMENT.className += classes.chatBotBubble
+      const node = document.createTextNode(RECEIVED_MSG.msg)
+      TEXT_ELEMENT.appendChild(node)
 
-    const element = document.getElementById('ChatContainer')
-    element.appendChild(TEXT_ELEMENT)
-  }
+      const element = document.getElementById('ChatContainer')
+      element.appendChild(TEXT_ELEMENT)
+    }
   }, [RECEIVED_MSG])
 
   useEffect(() => {
-    if (userInput != undefined && userInput != null && userInput != '')
-    {
+    if (userInput != undefined && userInput != null && userInput != '') {
       //When the value of userInput is updated, the message is updated to cloud firestore db from a separate fetch request on line 211 and is displayed on right side of chat screen
       //for chat messages dispayed on right side of the screen
       const TEXT_ELEMENT = document.createElement('div')
@@ -162,41 +160,14 @@ const ChatScreen = e => {
     }
   }, [userInput])
 
-  // useEffect(() => {
-  //   // FUNCTION TO RETRIEVE GREETINGS
-  //   const retrieveData = async () => {
-  //     const coll = collection(dbh, 'greetings')
-  //     const querySnapshot = await getDocs(coll)
-  //     const newGreetings = []
-  //     querySnapshot.forEach(async doc => {
-  //       console.log(doc.id, ' => ', doc)
-  //       const data = doc.data()
-
-  //       const item = {
-  //         id: doc.id,
-  //         text: data.text,
-  //       }
-  //       newGreetings.push(item)
-  //     })
-
-  //     setGreetings(newGreetings)
-  //   }
-
-  //   retrieveData()
-  // }, [])
   interface item {
     id: string
     text: string
   }
 
-  
   const updateTextFieldUser = async () => {
     setUserInput(currInput)
 
-    // const date = new Date().valueOf()
-    // const newChatLogs = {
-    //   [date]: currInput,
-    // }
 
     async function PushData() {
       try {
@@ -222,12 +193,11 @@ const ChatScreen = e => {
         }
         const POST_MSG_TO_DB = async () => {
           const date = new Date().valueOf()
-          const doc_ref = await doc(db, 'Users', auth.currentUser.uid)
-          updateDoc(doc_ref, {
+          const doc_ref = doc(db, 'Users', auth.currentUser.uid)
+          await updateDoc(doc_ref, {
             [`info.ChatLogs.${date}`]: { User: currInput },
           })
         }
-        // https://test-pwa-lac.vercel.app/push
 
         const [POST_MSG_TO_API_CALLBACK, POST_MSG_TO_DB_CALLBACK] = await Promise.allSettled([
           POST_MSG_TO_API(),
@@ -235,14 +205,6 @@ const ChatScreen = e => {
         ])
         console.log(POST_MSG_TO_API_CALLBACK.status)
         console.log(POST_MSG_TO_DB_CALLBACK.status)
-        // if (!POST_MSG_TO_API_CALLBACK.ok) {
-        //   throw new Error('Request failed with status ' + response.status)
-        // } else {
-        //   console.log('PUSH REQUEST SUCCESS')
-        // }
-
-        // const data = await response.json()
-        // console.log(data)
       } catch (error) {
         console.log(error)
         alert(error)
@@ -255,29 +217,7 @@ const ChatScreen = e => {
   }
   return (
     <div>
-      <div className={classes.chatContainer} id="ChatContainer">
-        {/* {[...Greetings].map((word, idx) => {
-          if (idx >= 1) {
-            return
-          }
-          if (word.text !== '') {
-            return (
-              <div key={idx} className={classes.chatBotBubble}>
-                {word.text}
-              </div>
-            )
-          }
-        })}
-        {[...userInput].map((word, idx) => {
-          if (word !== '') {
-            return (
-              <div key={idx} className={classes.chatUserBubble}>
-                {word}
-              </div>
-            )
-          }
-        })} */}
-      </div>
+      <div className={classes.chatContainer} id="ChatContainer"></div>
       <div className={classes.inputBarContainer}>
         <input
           className={classes.inputBar}
@@ -303,12 +243,15 @@ const ChatScreen = e => {
           }}
           onClick={updateTextFieldUser}
         >
-          <SendIcon
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/2343/2343605.png"
             style={{
-              color: 'white',
+              position: 'relative',
+              color: 'black',
               backgroundColor: 'transparent',
               height: '40px',
               width: '40px',
+              top: '10px',
             }}
           />
         </button>

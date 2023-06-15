@@ -1,10 +1,13 @@
 import { Button, makeStyles } from '@material-ui/core'
 import { useState } from 'react'
 import { auth } from '../firebaseConfig'
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile} from 'firebase/auth'
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from 'firebase/auth'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
-
 
 // createStyles (old) vs makeStyles (new)
 // https://smartdevpreneur.com/material-ui-makestyles-usestyles-createstyles-and-withstyles-explained/
@@ -18,7 +21,7 @@ const useStyles = makeStyles(
       // alignItems: 'center',
       margin: theme.spacing(3),
       //backgroundColor: '#680747',
-      backgroundColor: 'black'
+      backgroundColor: '#F8AFA6',
     },
     ButtonsContainer: {
       display: 'flex',
@@ -40,12 +43,10 @@ const useStyles = makeStyles(
       width: '50px',
     },
     inputContainer: {
-     
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      
     },
     inputBar: {
       // backgroundColor: 'black',
@@ -53,12 +54,12 @@ const useStyles = makeStyles(
       // borderBottomWidth: '5px',
       marginTop: 5,
       padding: '20px',
-      borderColor: ''
+      borderColor: '',
     },
     input: {
       borderColor: 'transparent',
       borderBottomColor: 'black',
-      borderWidth: '1px'
+      borderWidth: '1px',
     },
     registerButton: {
       backgroundColor: 'grey',
@@ -67,7 +68,7 @@ const useStyles = makeStyles(
       borderRadius: 10,
       alignItems: 'center',
       marginTop: 20,
-      color: 'white'
+      color: 'white',
     },
     loginButton: {
       backgroundColor: 'white',
@@ -76,53 +77,43 @@ const useStyles = makeStyles(
       borderRadius: 10,
       alignItems: 'center',
       marginTop: 20,
-      color: 'black'
-    }
+      color: 'black',
+    },
   }),
   { name: 'App' }
 )
 
 const LoginScreen = () => {
   const navigate = useNavigate()
-  
 
-  
- 
   interface RegisterUser {
-    
     email: string
     password: string
-    
   }
   const [user, setUser] = useState<RegisterUser>({
-    
     email: '',
     password: '',
-    
   })
-  
-const handleLogin = () =>{
-  console.log(user.email, user.password)
- 
-  signInWithEmailAndPassword(auth, user.email, user.password).then(userCredentials => {
-        console.log('logged in')
 
-      }).then(()=> {navigate('/home')})
+  const handleLogin = () => {
+    console.log(user.email, user.password)
+
+    signInWithEmailAndPassword(auth, user.email, user.password)
+      .then(userCredentials => {
+        console.log('logged in')
+      })
+      .then(() => {
+        navigate('/progress')
+      })
       .catch(error => alert(error.message))
-    
   }
 
-  
-
   const elements = [
-    
     ['email', 'email address'],
     ['password', 'password'],
-    
   ]
   const classes = useStyles()
 
-  
   return (
     <div className={classes.root}>
       <div className={classes.inputContainer}>
@@ -133,41 +124,56 @@ const handleLogin = () =>{
                 className={classes.input}
                 type={`${component[0]}`}
                 placeholder={`${component[1]}`}
-                onChange={(text) => {
+                onChange={text => {
+                  setUser(prevInfo => ({
+                    ...prevInfo,
+                    [component[0]]: text.target.value,
+                  }))
 
-                  
-                    setUser(prevInfo => ({
-...prevInfo, 
-[component[0]] : text.target.value
-                    }))
-                  
-    
-// GET HELP ON THIS
+                  // GET HELP ON THIS
                 }}
                 autoCapitalize="none"
                 autoCorrect="false"
                 autoComplete="off"
               />
-              
-              
             </div>
-            
           )
         })}
-       
       </div>
-      
-      <Button className = {classes.loginButton} onClick={()=>{
-        handleLogin()
-      }}>Login</Button>
-<div style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent:'center'}}>
-<text style = {{fontSize: '15px', display: 'inline', flexWrap: 'wrap', width: '60vw', color: 'white'}}>Haven't signed up??</text>
-<Button className = {classes.registerButton} href="/auth/Register">Create Account</Button>
-</div>
+
+      <Button
+        className={classes.loginButton}
+        onClick={() => {
+          handleLogin()
+        }}
+      >
+        Login
+      </Button>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <text
+          style={{
+            fontSize: '15px',
+            display: 'inline',
+            flexWrap: 'wrap',
+            width: '60vw',
+            color: 'white',
+          }}
+        >
+          Haven't signed up??
+        </text>
+        <Button className={classes.registerButton} href="/auth/Register">
+          Create Account
+        </Button>
+      </div>
     </div>
   )
-  
- 
 }
 
 export default LoginScreen

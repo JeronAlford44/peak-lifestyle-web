@@ -102,10 +102,10 @@ export const apiData = {
 
 
 
-export default function ProgressScreen(){
+export default function ProfileScreen(){
     return <div>
-        <div>Progress</div>
-        <Chart data={apiData} />;
+        <div>Profile</div>
+      
         
         </div>
 }

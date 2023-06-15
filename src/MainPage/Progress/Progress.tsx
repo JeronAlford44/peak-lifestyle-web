@@ -31,7 +31,7 @@ const useStyles = makeStyles(
       flexDirection: 'column',
       width: '90vw',
       height: '82vh',
-      backgroundColor: 'black',
+      backgroundColor: 'white',
     },
     settingsHeader: {
       alignSelf: 'center',
@@ -41,19 +41,19 @@ const useStyles = makeStyles(
   }),
   { name: 'Home' }
 )
-const HomeScreen = () => {
+const ProgressScreen = () => {
   const auth = getAuth()
   const classes = useStyles()
   return (
     <div className={classes.root}>
     
       <div className={classes.componentContainer}>
-        <text style = {{color: 'white'}}>
+        <div style = {{color: 'black'}}>
           Welcome {auth.currentUser.displayName ? auth.currentUser.displayName.split(' ')[0] : null}
           !
-        </text>
+        </div>
       </div>
     </div>
   )
 }
-export default HomeScreen
+export default ProgressScreen

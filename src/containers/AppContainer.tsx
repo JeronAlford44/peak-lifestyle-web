@@ -5,6 +5,7 @@ import HomeIcon from '@mui/icons-material/Home'
 import ChatIcon from '@mui/icons-material/Chat'
 import SettingsIcon from '@mui/icons-material/Settings'
 import * as React from 'react'
+import AutorenewIcon from '@mui/icons-material/Autorenew'
 
 // createStyles (old) vs makeStyles (new)
 // https://smartdevpreneur.com/material-ui-makestyles-usestyles-createstyles-and-withstyles-explained/
@@ -25,9 +26,9 @@ const useStyles = makeStyles(
       backgroundColor: 'transparent',
     },
     bottomNav: {
-      color: 'white !important',
+      color: 'grey !important',
       '& .Mui-selected': {
-        borderBottom: '2px solid white',
+        borderBottom: '2px solid grey',
       },
     },
   }),
@@ -40,10 +41,10 @@ const AppContainer = (props: any) => {
   const [value, setValue] = React.useState(0)
   const handlePathName = () => {
      const loc = useLocation().pathname.replace('/', '').toUpperCase()
-     console.log(loc)
+    //  console.log(loc)
      if (loc.startsWith('SETTINGS/')){
-      console.log('is true')
-      return useLocation().pathname.replace('/', '').toUpperCase().replace('SETTINGS/',"")
+    
+      return useLocation().pathname.replace('/', '').toUpperCase().replace('SETTINGS/',"").replaceAll('-', ' ')
      }
     return loc
   }
@@ -58,6 +59,7 @@ const AppContainer = (props: any) => {
           borderBottomColor: 'grey !important',
           borderStyle: 'solid',
           marginBottom: '2vh',
+          color: 'grey',
           
           textAlign: 'center',
           // background: 'linear-gradient(90deg, #B2BEB5 30%, #A9A9A9 90%)',
@@ -78,10 +80,10 @@ const AppContainer = (props: any) => {
       >
         {/* onClick={handleClick} color={flag ? "green" : "red"} */}
         <BottomNavigationAction
-          label="Home"
-          icon={<HomeIcon />}
+          label="Progress"
+          icon={<AutorenewIcon />}
           onClick={() => {
-            navigate('/home')
+            navigate('/progress')
           }}
           className={classes.bottomNav}
         />
@@ -97,6 +99,7 @@ const AppContainer = (props: any) => {
           label="Settings"
           icon={<SettingsIcon />}
           onClick={() => {
+            
             navigate('/settings')
           }}
           className={classes.bottomNav}

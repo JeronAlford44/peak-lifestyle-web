@@ -67,6 +67,7 @@ const useStyles = makeStyles(
   
     },
     logoComponents: {
+      marginTop: '5vh',
       display: 'flex',
       flexDirection: 'column'
     }
@@ -78,8 +79,8 @@ const AuthContainer = () => {
   const classes = useStyles()
   return(  
     
-    <div >
-        <div >AUTH HEADER</div>
+    <div style={{backgroundColor: '#F8AFA6', height: '100vh', }} >
+       
         <div className={classes.logoComponents}>
         <img src = 'https://static.vecteezy.com/system/resources/previews/008/505/848/original/medical-heart-illustration-png.png' className = {classes.heartImage}/>
         <div className={classes.logoText}>Peak Lifestyle</div>
