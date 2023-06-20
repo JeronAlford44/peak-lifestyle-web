@@ -168,7 +168,6 @@ const ChatScreen = e => {
   const updateTextFieldUser = async () => {
     setUserInput(currInput)
 
-
     async function PushData() {
       try {
         const POST_MSG_TO_API = async () => {
@@ -216,7 +215,7 @@ const ChatScreen = e => {
       .catch(error => alert(error))
   }
   return (
-    <div>
+    <div style={{ overflow: 'scroll' }}>
       <div className={classes.chatContainer} id="ChatContainer"></div>
       <div className={classes.inputBarContainer}>
         <input

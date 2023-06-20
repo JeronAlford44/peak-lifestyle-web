@@ -86,11 +86,11 @@ const useStyles = makeStyles(
 const LoginScreen = () => {
   const navigate = useNavigate()
 
-  interface RegisterUser {
+  interface LoginUser {
     email: string
     password: string
   }
-  const [user, setUser] = useState<RegisterUser>({
+  const [user, setUser] = useState<LoginUser>({
     email: '',
     password: '',
   })
@@ -117,9 +117,9 @@ const LoginScreen = () => {
   return (
     <div className={classes.root}>
       <div className={classes.inputContainer}>
-        {elements.map((component: object) => {
+        {elements.map((component: object, idx) => {
           return (
-            <div className={classes.inputBar}>
+            <div key={idx} className={classes.inputBar}>
               <input
                 className={classes.input}
                 type={`${component[0]}`}
@@ -157,7 +157,7 @@ const LoginScreen = () => {
           justifyContent: 'center',
         }}
       >
-        <text
+        <div
           style={{
             fontSize: '15px',
             display: 'inline',
@@ -167,7 +167,7 @@ const LoginScreen = () => {
           }}
         >
           Haven't signed up??
-        </text>
+        </div>
         <Button className={classes.registerButton} href="/auth/Register">
           Create Account
         </Button>

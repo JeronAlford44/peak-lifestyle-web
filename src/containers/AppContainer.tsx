@@ -6,6 +6,7 @@ import ChatIcon from '@mui/icons-material/Chat'
 import SettingsIcon from '@mui/icons-material/Settings'
 import * as React from 'react'
 import AutorenewIcon from '@mui/icons-material/Autorenew'
+import { auth } from '../firebaseConfig'
 
 // createStyles (old) vs makeStyles (new)
 // https://smartdevpreneur.com/material-ui-makestyles-usestyles-createstyles-and-withstyles-explained/
@@ -24,6 +25,7 @@ const useStyles = makeStyles(
       top: '90vh',
       width: '90vw',
       backgroundColor: 'transparent',
+      zIndex: 1,
     },
     bottomNav: {
       color: 'grey !important',
@@ -40,14 +42,26 @@ const AppContainer = (props: any) => {
   const classes = useStyles(props)
   const [value, setValue] = React.useState(0)
   const handlePathName = () => {
-     const loc = useLocation().pathname.replace('/', '').toUpperCase()
+    const loc = useLocation().pathname.replace('/', '').toUpperCase()
     //  console.log(loc)
-     if (loc.startsWith('SETTINGS/')){
-    
-      return useLocation().pathname.replace('/', '').toUpperCase().replace('SETTINGS/',"").replaceAll('-', ' ')
-     }
+    if (loc == 'SETTINGS/MENU'){
+      return 'SETTINGS'
+    }
+    else if (loc.startsWith('SETTINGS/MENU/')) {
+      return useLocation()
+        .pathname.replace('/', '')
+        .toUpperCase()
+        .replace('SETTINGS/MENU/', '')
+        .replaceAll('-', ' ')
+    }
     return loc
   }
+  React.useEffect(() => {
+    if (auth.currentUser == null) {
+      alert('You have been signed out. Please log in again to continue')
+      navigate('/auth/login')
+    }
+  }, [handlePathName()])
 
   return (
     <div className={classes.root}>
@@ -60,7 +74,7 @@ const AppContainer = (props: any) => {
           borderStyle: 'solid',
           marginBottom: '2vh',
           color: 'grey',
-          
+
           textAlign: 'center',
           // background: 'linear-gradient(90deg, #B2BEB5 30%, #A9A9A9 90%)',
         }}
@@ -99,8 +113,7 @@ const AppContainer = (props: any) => {
           label="Settings"
           icon={<SettingsIcon />}
           onClick={() => {
-            
-            navigate('/settings')
+            navigate('/settings/menu')
           }}
           className={classes.bottomNav}
         />

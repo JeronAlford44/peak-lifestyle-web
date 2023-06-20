@@ -1,6 +1,9 @@
 export default function CreateUserForDB(){
 
-const newUser = {
+interface newUser {
     SignInStreak: '',
 }
+
+
+
 }

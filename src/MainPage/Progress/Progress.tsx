@@ -3,7 +3,7 @@ import { Auth, getAuth } from 'firebase/auth'
 
 const useStyles = makeStyles(
   theme => ({
-    root: { backgroundColor: '' },
+    root: { backgroundColor: '', overflow: 'scroll' },
     menuContainer: {
       display: 'flex',
       flexDirection: 'column',
