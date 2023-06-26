@@ -24,6 +24,7 @@ import { auth } from './firebaseConfig'
 import LogoutScreen from './MainPage/Settings/components/LogoutScreen/Logout'
 import SettingsProvider from './Providers/SettingsProvider'
 import SettingsMenuContextProvider from './Providers/Context/SettingsContext'
+import UserProfileProvider from './Providers/UserProfileProvider'
 
 
 const useStyles = makeStyles(
@@ -85,8 +86,11 @@ const App = props => {
   return (
     <div className={classes.root}>
       <Router>
+        
         <Routes>
+          <Route path='/' element={<UserProfileProvider />}>
           <Route path="/" element={<Navigate to="/auth/login" replace={true} />} />
+          
           <Route path="/" element={<AppContainer />}>
             <Route path="progress" element={<ProgressScreen />} />
             <Route path="chat" element={<ChatScreen />} />
@@ -103,12 +107,16 @@ const App = props => {
                 <Route path="change-display-name" element={<ChangeDisplayName />} />
               </Route>
             </Route>
-          </Route>
+            </Route>
+          
           <Route path="auth" element={<AuthContainer />}>
             <Route path="register" element={<RegisterScreen />} />
             <Route path="login" element={<LoginScreen />} />
           </Route>
+          
+          </Route>
         </Routes>
+        
       </Router>
     </div>
   )

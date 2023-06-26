@@ -93,9 +93,8 @@ export default function SettingsContainer(props) {
   const navigate = useNavigate()
   const {isMenuOpen, toggleMenu} = React.useContext(SettingsMenuContext)
    React.useEffect(() => {
-     if (!isMenuOpen) {
-       toggleMenu()
-     }
+     !isMenuOpen?  toggleMenu(): null
+  
    }, [])
   
 

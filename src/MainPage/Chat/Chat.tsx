@@ -193,9 +193,9 @@ const ChatScreen = e => {
         const POST_MSG_TO_DB = async () => {
           const date = new Date().valueOf()
           const doc_ref = doc(db, 'Users', auth.currentUser.uid)
-          await updateDoc(doc_ref, {
-            [`info.ChatLogs.${date}`]: { User: currInput },
-          })
+          // await updateDoc(doc_ref, {
+          //   [`info.ChatLogs.${date}`]: { User: currInput },
+          // })
         }
 
         const [POST_MSG_TO_API_CALLBACK, POST_MSG_TO_DB_CALLBACK] = await Promise.allSettled([

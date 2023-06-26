@@ -5,6 +5,7 @@ import { Auth } from 'firebase/auth'
 import { getAuth } from 'firebase/auth'
 import { updateProfile } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
+import { UserProfileContext } from '../../../../Providers/Context/UserProfileContext'
 
 const useStyles = makeStyles(
   theme => ({
@@ -51,14 +52,16 @@ export default function ChangeDisplayName() {
   const [displayName, setDisplayName] = useState('')
   const auth = getAuth()
   const navigate = useNavigate()
+  const {userData, toggleItemState} = React.useContext(UserProfileContext)
 
   const handleUserNameUpdate = async () => {
     try {
       await updateProfile(auth.currentUser, {
         displayName: newName
       }).then(()=> {
-        setDisplayName(newName) // update the display name in state
-      setNewName('')
+         // update the display name in state
+      toggleItemState('Name', newName)
+      console.log(userData)
       // window.location.reload()
      
       // navigate('/settings/change-display-name')

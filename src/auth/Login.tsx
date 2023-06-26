@@ -1,13 +1,17 @@
 import { Button, makeStyles } from '@material-ui/core'
-import { useState } from 'react'
-import { auth } from '../firebaseConfig'
+import { useContext, useState } from 'react'
+import { auth, dbh } from '../firebaseConfig'
 import {
+  browserSessionPersistence,
   createUserWithEmailAndPassword,
+  setPersistence,
   signInWithEmailAndPassword,
   updateProfile,
 } from 'firebase/auth'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
+import { UserProfileContext } from '../Providers/Context/UserProfileContext'
+import { doc, getDoc } from 'firebase/firestore'
 
 // createStyles (old) vs makeStyles (new)
 // https://smartdevpreneur.com/material-ui-makestyles-usestyles-createstyles-and-withstyles-explained/
@@ -85,34 +89,36 @@ const useStyles = makeStyles(
 
 const LoginScreen = () => {
   const navigate = useNavigate()
-
-  interface LoginUser {
-    email: string
-    password: string
-  }
-  const [user, setUser] = useState<LoginUser>({
+  const { userData, toggleItemState } = useContext(UserProfileContext)
+  const [user, setUser] = useState({
     email: '',
     password: '',
   })
 
-  const handleLogin = () => {
-    console.log(user.email, user.password)
-
-    signInWithEmailAndPassword(auth, user.email, user.password)
-      .then(userCredentials => {
-        console.log('logged in')
-      })
-      .then(() => {
-        navigate('/progress')
-      })
-      .catch(error => alert(error.message))
+  const handleLogin = async () => {
+    try {
+      await setPersistence(auth, browserSessionPersistence)
+      await signInWithEmailAndPassword(auth, user.email, user.password)
+      console.log('logged in')
+      const userDocRef = doc(dbh, 'Users', auth.currentUser.uid)
+      const userDocSnap = await getDoc(userDocRef)
+      if (userDocSnap.exists()) {
+        toggleItemState('All', userDocSnap.data())
+      }
+      navigate('/progress')
+      console.log(userData)
+    } catch (error) {
+      alert(error.message)
+    }
   }
+
+  const classes = useStyles()
 
   const elements = [
     ['email', 'email address'],
     ['password', 'password'],
   ]
-  const classes = useStyles()
+  
 
   return (
     <div className={classes.root}>

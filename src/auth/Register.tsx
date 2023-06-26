@@ -1,5 +1,5 @@
 import { Button, makeStyles } from '@material-ui/core'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { auth, dbh } from '../firebaseConfig'
 import {
   createUserWithEmailAndPassword,
@@ -10,6 +10,7 @@ import { Outlet, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import { unsubscribe } from 'diagnostics_channel'
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore'
+import { UserProfileContext } from '../Providers/Context/UserProfileContext'
 
 // createStyles (old) vs makeStyles (new)
 // https://smartdevpreneur.com/material-ui-makestyles-usestyles-createstyles-and-withstyles-explained/
@@ -100,6 +101,7 @@ const RegisterScreen = () => {
     retypePassword: '',
   })
 
+  const {userData, toggleItemState} = useContext(UserProfileContext)
   const handleRegister = async () => {
     // console.log(user.password, user.retypePassword)
 
@@ -114,16 +116,15 @@ const RegisterScreen = () => {
           updateProfile(auth.currentUser, {
             displayName: user.name,
           }).then(async () => {
-            await setDoc(doc(dbh, 'Users', auth.currentUser.uid), {
-              info: {
-                name: user.name,
-                email: user.email,
-                RegisterDate: new Date().valueOf(),
-                ChatLogs: {
-                  ['Text']: 'firestoreTimestamp',
-                },
-              },
-            })
+            toggleItemState('Name', auth.currentUser.displayName)
+            toggleItemState('Email', auth.currentUser.email)
+            toggleItemState('RegisterDate', new Date().valueOf())
+            // toggleItemState(
+            //   'ProfileImgUrl',
+            //   'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png'
+            // )
+            console.log('user data', userData)
+            await setDoc(doc(dbh, 'Users', auth.currentUser.uid), userData)
 
             // console.log('Logged in with:', newUser.email)
             // console.log('Welcome', newUser.displayName)

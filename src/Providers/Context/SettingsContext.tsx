@@ -30,7 +30,7 @@ import React, { createContext, useState } from 'react'
 export const SettingsMenuContext = createContext(null)
 
 const SettingsMenuContextProvider = (props: { children: React.ReactElement | any }) => {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(true)
+  const [isMenuOpen, setIsMenuOpen] = React.useState<boolean>(true)
 
   const toggleMenu = () => {
     setIsMenuOpen(state => !state)
