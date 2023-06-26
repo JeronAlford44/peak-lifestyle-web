@@ -40,6 +40,9 @@ const UserProfileContextProvider = (props: { children: React.ReactElement | any 
   const [userData, setUserData] = React.useState(UserDataDefault)
 
   const toggleItemState = (
+
+    //TAKES IN 1 or AT MOST 2 ARGUMENTS, THE ITEM TO TOGGLE AND THE NEW VALUE WITHIN THE userDATA OBJECT
+    //DATA IS UPDATED WITH FIRESTORE in LOGIN.tsx to grab the data assocaited with the user email
     item: string,
     newValue: Number | String | UserDataType | object
   ): void => {
