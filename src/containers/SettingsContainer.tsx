@@ -95,7 +95,7 @@ export default function SettingsContainer(props) {
   console.log(window.location.pathname)
    React.useEffect(() => {
      !isMenuOpen && window.location.pathname == '/settings/menu'?  toggleMenu(): null
-     console.log(isMenuOpen)
+     
   
    }, [window.location.pathname])
   
@@ -145,7 +145,7 @@ export default function SettingsContainer(props) {
             >
               {elements.slice(0, 4).map((component: String | any, idx) => {
                 if (component != null) {
-                  // console.log(component.toLowerCase().replaceAll(' ', '-'))
+             
                   return (
                     <div className={classes.menuBar} key={idx}>
                       <div
@@ -178,7 +178,7 @@ export default function SettingsContainer(props) {
                 }}
               >
                 {elements.slice(4).map((component: String | any, idx) => {
-                  // console.log(component.toLowerCase().replaceAll(' ', '-'))
+                
                   if (component != null) {
                     return (
                       <div className={classes.menuBar} key={idx}>

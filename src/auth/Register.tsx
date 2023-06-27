@@ -2,7 +2,9 @@ import { Button, makeStyles } from '@material-ui/core'
 import { useContext, useState } from 'react'
 import { auth, dbh } from '../firebaseConfig'
 import {
+  browserLocalPersistence,
   createUserWithEmailAndPassword,
+  setPersistence,
   signInWithEmailAndPassword,
   updateProfile,
 } from 'firebase/auth'
@@ -11,6 +13,7 @@ import { useEffect } from 'react'
 import { unsubscribe } from 'diagnostics_channel'
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore'
 import { UserProfileContext } from '../Providers/Context/UserProfileContext'
+
 
 // createStyles (old) vs makeStyles (new)
 // https://smartdevpreneur.com/material-ui-makestyles-usestyles-createstyles-and-withstyles-explained/
@@ -84,7 +87,7 @@ const useStyles = makeStyles(
   }),
   { name: 'App' }
 )
-var finalUser
+
 const RegisterScreen = () => {
   const navigate = useNavigate()
 
@@ -103,16 +106,23 @@ const RegisterScreen = () => {
 
   const {userData, toggleItemState} = useContext(UserProfileContext)
   const handleRegister = async () => {
-    // console.log(user.password, user.retypePassword)
+ 
 
     if (user.password !== user.retypePassword) {
       alert('Passwords do not match')
     } else {
-      createUserWithEmailAndPassword(auth, user.email, user.password)
+      setPersistence(auth, browserLocalPersistence)
+  .then(async() => {
+    // Existing and future Auth states are now persisted in the current
+    // session only. Closing the window would clear any existing state even
+    // if a user forgets to sign out.
+    // ...
+    // New sign-in will be persisted with session persistence.
+    
+      await createUserWithEmailAndPassword(auth, user.email, user.password)
         .then(userCredentials => {
           const newUser = userCredentials.user
-          console.log(newUser)
-          finalUser = newUser
+          
           updateProfile(auth.currentUser, {
             displayName: user.name,
           }).then(async () => {
@@ -123,11 +133,10 @@ const RegisterScreen = () => {
             //   'ProfileImgUrl',
             //   'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png'
             // )
-            console.log('user data', userData)
+            
             await setDoc(doc(dbh, 'Users', auth.currentUser.uid), userData)
 
-            // console.log('Logged in with:', newUser.email)
-            // console.log('Welcome', newUser.displayName)
+         
           })
 
       
@@ -137,7 +146,8 @@ const RegisterScreen = () => {
         })
         .catch(error => alert(error.message))
     }
-  }
+  )
+  }}
 
   const elements = [
     ['name', 'name'],
@@ -159,7 +169,7 @@ const RegisterScreen = () => {
                 placeholder={`${component[1]}`}
                 onChange={text => {
                   if (component[1] === 'confirm password') {
-                    // console.log(component)
+             
                     setUser(prevInfo => ({ ...prevInfo, retypePassword: text.target.value }))
                   } else {
                     setUser(prevInfo => ({
@@ -168,7 +178,6 @@ const RegisterScreen = () => {
                     }))
                   }
 
-                  // GET HELP ON THIS
                 }}
                 autoCapitalize="none"
                 autoCorrect="false"
@@ -205,4 +214,4 @@ const RegisterScreen = () => {
 }
 
 export default RegisterScreen
-export { finalUser }
+

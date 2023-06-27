@@ -61,7 +61,7 @@ export default function ChangeDisplayName() {
       }).then(()=> {
          // update the display name in state
       toggleItemState('Name', newName)
-      console.log(userData)
+      
       // window.location.reload()
      
       // navigate('/settings/change-display-name')
@@ -69,7 +69,7 @@ export default function ChangeDisplayName() {
       
     } catch (error) {
       alert(error)
-      console.log(error)
+      
       // ...
     }
   }

@@ -44,18 +44,18 @@ export default function HelpScreen() {
   const db = getFirestore(app)
 
   const handleFormSubmit = async () => {
-    console.log('test')
+ 
     const statusUpdate = (new Date().valueOf()).toString()
     if (msgBody.length > 0 && msgSubject.length > 0) {
-      console.log('working')
+     
       const formData = {
         from: auth.currentUser.email,
         subject: msgSubject,
         body: msgBody,
       }
       await setDoc(doc(db, 'HelpForms', statusUpdate), formData)
-        .then(() => console.log('passed'))
-        .catch(error => console.log(error))
+       
+        .catch(error => alert(error))
       setSubmitted(true)
     } else {
       alert('Error: One or more text fields empty')

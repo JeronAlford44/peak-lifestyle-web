@@ -130,7 +130,7 @@ const ChatScreen = e => {
     //RECEIVED_MSG.msg is the path to get a message from a python backend JSON response
     if (RECEIVED_MSG.msg != undefined && RECEIVED_MSG.msg != null && RECEIVED_MSG.msg != '') {
       //When the value of RECEIVED_MSG is updated, the message is updated to cloud firestore db and is displayed on left side of chat screen
-      console.log(RECEIVED_MSG.msg)
+     
       const date = new Date().valueOf()
       const doc_ref = doc(db, 'Users', auth.currentUser.uid)
       updateDoc(doc_ref, {
@@ -205,8 +205,8 @@ const ChatScreen = e => {
         console.log(POST_MSG_TO_API_CALLBACK.status)
         console.log(POST_MSG_TO_DB_CALLBACK.status)
       } catch (error) {
-        console.log(error)
         alert(error)
+    
       }
     }
 

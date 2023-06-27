@@ -2,6 +2,7 @@ import { Button, makeStyles } from '@material-ui/core'
 import { useContext, useState } from 'react'
 import { auth, dbh } from '../firebaseConfig'
 import {
+  browserLocalPersistence,
   browserSessionPersistence,
   createUserWithEmailAndPassword,
   setPersistence,
@@ -12,6 +13,8 @@ import { Outlet, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import { UserProfileContext } from '../Providers/Context/UserProfileContext'
 import { doc, getDoc } from 'firebase/firestore'
+
+
 
 // createStyles (old) vs makeStyles (new)
 // https://smartdevpreneur.com/material-ui-makestyles-usestyles-createstyles-and-withstyles-explained/
@@ -96,19 +99,21 @@ const LoginScreen = () => {
   })
 
   const handleLogin = async () => {
-    try {
-      await setPersistence(auth, browserSessionPersistence)
-      await signInWithEmailAndPassword(auth, user.email, user.password)
-      console.log('logged in')
+    try { 
+
+     
+      await setPersistence(auth, browserLocalPersistence).then(async () => {return await signInWithEmailAndPassword(auth, user.email, user.password)})
+      
+     
       const userDocRef = doc(dbh, 'Users', auth.currentUser.uid)
       const userDocSnap = await getDoc(userDocRef)
-      console.log('data,', userDocSnap.data())
+    
       if (userDocSnap.exists()) {
         toggleItemState('All', userDocSnap.data() as object)
-        console.log(userData)
+        
       }
       navigate('/progress')
-      console.log(userData)
+      
     } catch (error) {
       alert(error.message)
     }

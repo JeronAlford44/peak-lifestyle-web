@@ -62,10 +62,10 @@ const UserProfileContextProvider = (props: { children: React.ReactElement | any 
         })
       } else {
         if (item === 'All' && typeof newValue === 'object') {
-            console.log('UPDATING')
+           
           setUserData(newValue as UserDataType) // Type assertion
         } else {
-            console.log('NOt UPDATING')
+         
           setUserData((prevState: UserDataType) => {
             return {
               ...prevState,
@@ -76,7 +76,7 @@ const UserProfileContextProvider = (props: { children: React.ReactElement | any 
       }
       console.log('All', userData)
     } catch (err) {
-      console.log(err)
+     alert(err)
     }
   }
 

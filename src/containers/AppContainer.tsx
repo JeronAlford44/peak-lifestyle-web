@@ -43,7 +43,7 @@ const AppContainer = (props: any) => {
   const [value, setValue] = React.useState(0)
   const handlePathName = () => {
     const loc = useLocation().pathname.replace('/', '').toUpperCase()
-    //  console.log(loc)
+  
     if (loc == 'SETTINGS/MENU'){
       return 'SETTINGS'
     }

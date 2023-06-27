@@ -1,7 +1,7 @@
 import { Auth } from 'firebase/auth'
 const domain = 'peak-lifestyle-web.firebaseapp.com'
 import { getAuth, sendSignInLinkToEmail } from 'firebase/auth'
-import { finalUser } from '../../../../auth/Register'
+
 import { sendEmailVerification } from 'firebase/auth'
 import { useState } from 'react'
 
@@ -35,10 +35,8 @@ const VerifyEmailScreen = () => {
 
             sendEmailVerification(auth.currentUser)
               .then(() => {
-                // The link was successfully sent. Inform the user.
-                // Save the email locally so you don't need to ask the user for it again
-                // if they open the link on the same device.
-                window.localStorage.setItem('emailForSignIn', finalUser.email)
+                
+                window.localStorage.setItem('emailForSignIn', auth.currentUser.email)
                 setEmailVerified(true)
                 // ...
               })
