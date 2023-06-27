@@ -26,6 +26,7 @@ export default function ProfileScreen(){
   const classes = useStyles()
     return (
       <div>
+        
         {/* <div>Profile</div> */}
         <div>
           <img id='progfileImg'

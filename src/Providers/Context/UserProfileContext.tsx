@@ -1,30 +1,29 @@
-import React, { createContext } from "react"
+import React, { createContext, useEffect } from 'react'
 
+export interface UserDataType {
+  // ProgressPage
+  SignInStreak: Number
 
-export const UserProfileContext = createContext(null)
-interface UserDataType {
-    //ProgressPage
-    SignInStreak: Number,
-  
-  //SettingsPage
-    //Profile
-      Name: String
-      Email: String
-      ProfileImgUrl: String
-      Age: Number
-      Weight: Number
-      Height: Number
-      ReasonForJoining: String
-      RegisterDate: String
-    
-  
+  // SettingsPage
+  // Profile
+  Name: string
+  Email: string
+  ProfileImgUrl: string
+  Age: Number
+  Weight: Number
+  Height: Number
+  ReasonForJoining: string
+  RegisterDate: string
 }
+
 export const UserDataDefault: UserDataType = {
-  //ProgressPage
+  // ProgressPage
+
+  
   SignInStreak: 0,
 
-  //SettingsPage
-  //Profile
+  // SettingsPage
+  // Profile
   Name: '',
   Email: '',
   ProfileImgUrl:
@@ -36,20 +35,26 @@ export const UserDataDefault: UserDataType = {
   RegisterDate: '',
 }
 
+interface UserProfileContextType {
+  userData: UserDataType
+  toggleItemState: (item: string, newValue: Number | string | UserDataType | object) => void
+}
+
+export const UserProfileContext = createContext<UserProfileContextType | null>(null)
+
 const UserProfileContextProvider = (props: { children: React.ReactElement | any }) => {
+    
   const [userData, setUserData] = React.useState(UserDataDefault)
+  useEffect(() => {console.log(userData)}, [userData])
 
   const toggleItemState = (
-
-    //TAKES IN 1 or AT MOST 2 ARGUMENTS, THE ITEM TO TOGGLE AND THE NEW VALUE WITHIN THE userDATA OBJECT
-    //DATA IS UPDATED WITH FIRESTORE in LOGIN.tsx to grab the data assocaited with the user email
     item: string,
-    newValue: Number | String | UserDataType | object
+    newValue: Number | string | UserDataType | object
   ): void => {
     const Value = newValue || null
     try {
       if (Value == null) {
-        setUserData((prevState: any) => {
+        setUserData((prevState: UserDataType) => {
           return {
             ...prevState,
             [item]: !prevState[item],
@@ -57,9 +62,11 @@ const UserProfileContextProvider = (props: { children: React.ReactElement | any 
         })
       } else {
         if (item === 'All' && typeof newValue === 'object') {
+            console.log('UPDATING')
           setUserData(newValue as UserDataType) // Type assertion
         } else {
-          setUserData((prevState: any) => {
+            console.log('NOt UPDATING')
+          setUserData((prevState: UserDataType) => {
             return {
               ...prevState,
               [item]: Value,
@@ -73,11 +80,11 @@ const UserProfileContextProvider = (props: { children: React.ReactElement | any 
     }
   }
 
-
   return (
     <UserProfileContext.Provider value={{ userData, toggleItemState }}>
       {props.children}
     </UserProfileContext.Provider>
   )
 }
+
 export default UserProfileContextProvider

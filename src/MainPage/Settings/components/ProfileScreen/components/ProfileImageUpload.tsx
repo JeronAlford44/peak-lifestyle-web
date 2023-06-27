@@ -1,7 +1,8 @@
 import { useContext, useState } from 'react'
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
-import { app } from '../../../../../firebaseConfig'
+import { app, auth, dbh } from '../../../../../firebaseConfig'
 import { UserProfileContext } from '../../../../../Providers/Context/UserProfileContext'
+import { doc, updateDoc } from 'firebase/firestore'
 
 const ProfileImageUpload = () => {
   const storage = getStorage(app)
@@ -19,7 +20,11 @@ const ProfileImageUpload = () => {
         .then(snapshot => {
           console.log('File upload successful', snapshot)
           getDownloadURL(snapshot.ref)
-            .then(url => {
+            .then(async (url)=> {
+                const userDocRef = doc(dbh, 'Users', auth.currentUser.uid)
+                const userDocSnap =  await updateDoc(userDocRef, {
+                    ProfileImgUrl: url,
+                })
               toggleItemState('ProfileImgUrl', url)
               console.log(userData)
             })

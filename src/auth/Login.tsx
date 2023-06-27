@@ -102,8 +102,10 @@ const LoginScreen = () => {
       console.log('logged in')
       const userDocRef = doc(dbh, 'Users', auth.currentUser.uid)
       const userDocSnap = await getDoc(userDocRef)
+      console.log('data,', userDocSnap.data())
       if (userDocSnap.exists()) {
-        toggleItemState('All', userDocSnap.data())
+        toggleItemState('All', userDocSnap.data() as object)
+        console.log(userData)
       }
       navigate('/progress')
       console.log(userData)

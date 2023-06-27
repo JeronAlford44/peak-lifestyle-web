@@ -92,10 +92,12 @@ export default function SettingsContainer(props) {
   const classes = useStyles(props)
   const navigate = useNavigate()
   const {isMenuOpen, toggleMenu} = React.useContext(SettingsMenuContext)
+  console.log(window.location.pathname)
    React.useEffect(() => {
-     !isMenuOpen?  toggleMenu(): null
+     !isMenuOpen && window.location.pathname == '/settings/menu'?  toggleMenu(): null
+     console.log(isMenuOpen)
   
-   }, [])
+   }, [window.location.pathname])
   
 
   //['Progress', 'Notifications','Display Options', 'Verify Email', 'Reset Password', 'About', 'Log Out']
@@ -124,7 +126,7 @@ export default function SettingsContainer(props) {
               className={classes.ArrowBackIcon}
               onClick={() => {
                 toggleMenu()
-                navigate(-1)
+                navigate('/settings/menu')
                 
               }}
             />
