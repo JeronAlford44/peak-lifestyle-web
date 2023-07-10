@@ -1,9 +1,10 @@
 import { makeStyles } from '@material-ui/core'
 import { Auth, getAuth } from 'firebase/auth'
+import UpdateSignInStreak from './components/SignInStreak'
 
 const useStyles = makeStyles(
   theme => ({
-    root: { backgroundColor: '', overflow: 'scroll' },
+    root: { display: 'flex',backgroundColor: '', overflow: 'scroll',},
     menuContainer: {
       display: 'flex',
       flexDirection: 'column',
@@ -29,8 +30,8 @@ const useStyles = makeStyles(
       display: 'flex',
       // position: 'absolute',
       flexDirection: 'column',
-      width: '90vw',
-      height: '82vh',
+      width: '100vw',
+      height: '100vh',
       backgroundColor: 'white',
     },
     settingsHeader: {
@@ -52,6 +53,7 @@ const ProgressScreen = () => {
           Welcome {auth.currentUser.displayName ? auth.currentUser.displayName.split(' ')[0] : null}
           !
         </div>
+        <div>Sign In Streak: {UpdateSignInStreak()}</div>
       </div>
     </div>
   )

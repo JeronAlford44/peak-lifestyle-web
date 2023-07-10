@@ -2,25 +2,27 @@ import React, { createContext, useEffect } from 'react'
 
 export interface UserDataType {
   // ProgressPage
-  SignInStreak: Number
+  SignInStreak: number,
+  LastSignIn: Date | null,
 
   // SettingsPage
   // Profile
-  Name: string
-  Email: string
-  ProfileImgUrl: string
-  Age: Number
-  Weight: Number
-  Height: Number
-  ReasonForJoining: string
-  RegisterDate: string
+  Name: string,
+  Email: string,
+  ProfileImgUrl: string,
+  Age: Number,
+  Weight: Number,
+  Height: Number,
+  ReasonForJoining: string,
+  RegisterDate: string,
+  
 }
 
 export const UserDataDefault: UserDataType = {
   // ProgressPage
 
-  
-  SignInStreak: 0,
+  SignInStreak: 1,
+  LastSignIn: new Date(),
 
   // SettingsPage
   // Profile
@@ -33,6 +35,9 @@ export const UserDataDefault: UserDataType = {
   Height: 0,
   ReasonForJoining: '',
   RegisterDate: '',
+
+  
+  
 }
 
 interface UserProfileContextType {
@@ -49,7 +54,7 @@ const UserProfileContextProvider = (props: { children: React.ReactElement | any 
 
   const toggleItemState = (
     item: string,
-    newValue: Number | string | UserDataType | object
+    newValue: Number | string | UserDataType | object | Date
   ): void => {
     const Value = newValue || null
     try {

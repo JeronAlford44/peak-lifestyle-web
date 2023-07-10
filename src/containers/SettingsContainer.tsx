@@ -21,9 +21,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import ChangeDisplayName from '../MainPage/Settings/components/ChangeDisplayNameScreen/ChangeDisplayName'
 import { auth } from '../firebaseConfig'
-import { SettingsMenuContext,} from '../Providers/Context/SettingsContext'
-
-
+import { SettingsMenuContext } from '../Providers/Context/SettingsContext'
 
 const drawerWidth = 240
 
@@ -60,8 +58,8 @@ const useStyles = makeStyles(
     componentContainer: {
       display: 'flex',
       flexDirection: 'column',
-      width: '90vw',
-      height: '80vh',
+      width: '100vw',
+      height: '90vh',
       backgroundColor: 'white',
       overflow: 'scroll',
     },
@@ -91,14 +89,11 @@ const useStyles = makeStyles(
 export default function SettingsContainer(props) {
   const classes = useStyles(props)
   const navigate = useNavigate()
-  const {isMenuOpen, toggleMenu} = React.useContext(SettingsMenuContext)
+  const { isMenuOpen, toggleMenu } = React.useContext(SettingsMenuContext)
   console.log(window.location.pathname)
-   React.useEffect(() => {
-     !isMenuOpen && window.location.pathname == '/settings/menu'?  toggleMenu(): null
-     
-  
-   }, [window.location.pathname])
-  
+  React.useEffect(() => {
+    !isMenuOpen && window.location.pathname == '/settings/menu' ? toggleMenu() : null
+  }, [window.location.pathname])
 
   //['Progress', 'Notifications','Display Options', 'Verify Email', 'Reset Password', 'About', 'Log Out']
   const elements = [
@@ -117,35 +112,65 @@ export default function SettingsContainer(props) {
   // https://stackoverflow.com/a/55621679
 
   return (
-  
-      <div className={classes.componentContainer}>
-        {/* {menuOpen ? <div className={classes.settingsHeader}>Settings</div> : null} */}
-        {!isMenuOpen ? (
-          <div style={{ display: 'flex', flexDirection: 'row' }}>
-            <ArrowBackIosIcon
-              className={classes.ArrowBackIcon}
-              onClick={() => {
-                toggleMenu()
-                navigate('/settings/menu')
-                
-              }}
-            />
-            <div style={{ color: '#007AFF' }}>Settings</div>
+    <div className={classes.componentContainer}>
+      {/* {menuOpen ? <div className={classes.settingsHeader}>Settings</div> : null} */}
+      {!isMenuOpen ? (
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <ArrowBackIosIcon
+            className={classes.ArrowBackIcon}
+            onClick={() => {
+              toggleMenu()
+              navigate('/settings/menu')
+            }}
+          />
+          <div style={{ color: '#007AFF' }}>Settings</div>
+        </div>
+      ) : null}
+      {isMenuOpen ? (
+        <div className={classes.menuContainer}>
+          <div
+            style={{
+              borderRadius: '16px',
+              marginBottom: '5vh',
+
+              backgroundColor: '#f2f2f2',
+            }}
+          >
+            {elements.slice(0, 4).map((component: String | any, idx) => {
+              if (component != null) {
+                return (
+                  <div className={classes.menuBar} key={idx}>
+                    <div
+                      className={classes.tool}
+                      onClick={() => {
+                        navigate(`/settings/menu/${component.toLowerCase().replaceAll(' ', '-')}`)
+
+                        toggleMenu()
+                      }}
+                    >
+                      <Toolbar style={{ color: 'black' }}>
+                        <div>{component}</div>
+                      </Toolbar>
+                    </div>
+                    <ArrowForwardIosIcon
+                      style={{ position: 'relative', top: '17px', color: 'black' }}
+                    />
+                  </div>
+                )
+              }
+            })}
           </div>
-        ) : null}
-        {isMenuOpen? (
-          <div className={classes.menuContainer}>
+
+          <div>
             <div
               style={{
                 borderRadius: '16px',
-                marginBottom: '5vh',
 
                 backgroundColor: '#f2f2f2',
               }}
             >
-              {elements.slice(0, 4).map((component: String | any, idx) => {
+              {elements.slice(4).map((component: String | any, idx) => {
                 if (component != null) {
-             
                   return (
                     <div className={classes.menuBar} key={idx}>
                       <div
@@ -168,47 +193,10 @@ export default function SettingsContainer(props) {
                 }
               })}
             </div>
-
-            <div>
-              <div
-                style={{
-                  borderRadius: '16px',
-
-                  backgroundColor: '#f2f2f2',
-                }}
-              >
-                {elements.slice(4).map((component: String | any, idx) => {
-                
-                  if (component != null) {
-                    return (
-                      <div className={classes.menuBar} key={idx}>
-                        <div
-                          className={classes.tool}
-                          onClick={() => {
-                            navigate(
-                              `/settings/menu/${component.toLowerCase().replaceAll(' ', '-')}`
-                            )
-
-                            toggleMenu()
-                          }}
-                        >
-                          <Toolbar style={{ color: 'black' }}>
-                            <div>{component}</div>
-                          </Toolbar>
-                        </div>
-                        <ArrowForwardIosIcon
-                          style={{ position: 'relative', top: '17px', color: 'black' }}
-                        />
-                      </div>
-                    )
-                  }
-                })}
-              </div>
-            </div>
           </div>
-        ) : null}
-        {!isMenuOpen ? <Outlet /> : null}
-      </div>
-
+        </div>
+      ) : null}
+      {!isMenuOpen ? <Outlet /> : null}
+    </div>
   )
 }

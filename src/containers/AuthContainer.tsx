@@ -1,6 +1,8 @@
-import { makeStyles } from '@material-ui/core'
-import { useState } from 'react'
+import {  makeStyles } from '@material-ui/core'
+import { useContext, useState } from 'react'
 import { Outlet } from 'react-router-dom'
+import { StylesContext } from '../Providers/Context/StylesContext'
+import Box from '@mui/material/Box'
 
 // createStyles (old) vs makeStyles (new)
 // https://smartdevpreneur.com/material-ui-makestyles-usestyles-createstyles-and-withstyles-explained/
@@ -53,8 +55,8 @@ const useStyles = makeStyles(
       marginBottom: '10vh'
     },
     heartImage: {
-      width: '200px',
-      height: '200px',
+      width: '40vw',
+      height: '20vh',
       alignSelf: 'center',
      
     },
@@ -77,18 +79,22 @@ const useStyles = makeStyles(
 
 const AuthContainer = () => {
   const classes = useStyles()
-  return(  
-    
-    <div style={{backgroundColor: '#F8AFA6', height: '100vh', }} >
-       
+  const { themeOptions, isLightMode, globalStyles, toggleLightMode } = useContext(StylesContext)
+  const style = globalStyles()
+  return (
+    <div className={style.authContainer}>
+      
         <div className={classes.logoComponents}>
-        <img src = 'https://static.vecteezy.com/system/resources/previews/008/505/848/original/medical-heart-illustration-png.png' className = {classes.heartImage}/>
-        <div className={classes.logoText}>Peak Lifestyle</div>
+          <img
+          color = 'secondary'
+            src="https://static.vecteezy.com/system/resources/previews/008/505/848/original/medical-heart-illustration-png.png"
+            className={classes.heartImage}
+          />
+          <div className={classes.logoText}>Peak Lifestyle</div>
         </div>
-        <Outlet/>
-
+        <Outlet />
+  
     </div>
-
   )
 }
 

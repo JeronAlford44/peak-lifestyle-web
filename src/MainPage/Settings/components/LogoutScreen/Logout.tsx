@@ -1,14 +1,12 @@
-import { signOut } from "firebase/auth"
-import { auth } from "../../../../firebaseConfig"
-import { useNavigate } from "react-router-dom"
-import { useContext, useEffect } from "react"
-import { SettingsMenuContext } from "../../../../Providers/Context/SettingsContext"
+import { signOut } from 'firebase/auth'
+import { auth } from '../../../../firebaseConfig'
+import { useNavigate } from 'react-router-dom'
+import { useContext, useEffect } from 'react'
+import { SettingsMenuContext } from '../../../../Providers/Context/SettingsContext'
 
- 
 export function LogoutScreen() {
-    const {isMenuOpen, toggleMenu} = useContext(SettingsMenuContext)
+  const { isMenuOpen, toggleMenu } = useContext(SettingsMenuContext)
   const navigate = useNavigate()
-  
 
   useEffect(() => {
     const logoutIntent = confirm('Are you sure you want to log out?')

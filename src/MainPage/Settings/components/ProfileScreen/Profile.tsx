@@ -3,7 +3,7 @@ import Chart from "@mindinventory/result-doughnut-chart";
 import ProfileImageUpload from "./components/ProfileImageUpload";
 import React, { useEffect } from "react";
 import { UserProfileContext } from "../../../../Providers/Context/UserProfileContext";
-import { makeStyles } from "@material-ui/core";
+import { Avatar, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   profileImg: {
@@ -26,15 +26,9 @@ export default function ProfileScreen(){
   const classes = useStyles()
     return (
       <div>
-        
         {/* <div>Profile</div> */}
         <div>
-          <img id='progfileImg'
-            className={classes.profileImg}
-            src={userData.ProfileImgUrl}
-            alt="Profile Image"
-            style={{}}
-          />
+          <Avatar alt="Profile Image" src={userData.ProfileImgUrl} style={{ width: 112, height: 112 }} />
         </div>
         <ProfileImageUpload />
       </div>

@@ -1,15 +1,16 @@
-import { makeStyles } from '@material-ui/core'
+import { AppBar, TextField, makeStyles } from '@material-ui/core'
 import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
-import { collection, doc, getDocFromCache, getDocs, setDoc, updateDoc } from 'firebase/firestore'
+import { collection, doc, getDocFromCache, getDocs, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore'
 
 import { app, auth, dbh } from '../../firebaseConfig'
 import { getFirestore } from 'firebase/firestore'
-import { getDoc } from 'firebase/firestore'
-
 import SendIcon from '@mui/icons-material/Send'
-import { METHODS } from 'http'
-import IosShareIcon from '@mui/icons-material/IosShare'
+import CloudUploadIcon from '@mui/icons-material/CloudUpload'
+import { FilledInput } from '@mui/material'
+
+
+
 
 const useStyles = makeStyles(
   theme => ({
@@ -45,37 +46,43 @@ const useStyles = makeStyles(
       width: '50px',
     },
     inputBarContainer: {
-      flexDirection: 'row',
+      // flexDirection: 'row',
 
       // backgroundColor: '#680747',
-      backgroundColor: 'transparent',
-      borderColor: 'grey',
-      borderStyle: 'solid',
-      borderRadius: '16px',
+      // backgroundColor: 'transparent',
+      // borderColor: 'grey',
+      // borderStyle: 'solid',
+      // borderWidth: '10px'
+      
+      maxHeight: '30vh',
     },
     inputBar: {
+      marginTop: '1vh',
       padding: '3px',
       fontSize: '14px',
-      // fontFamily: 'Courier',
+      overflow: 'scroll',
+      color: 'white',
       borderColor: 'transparent',
-      borderWidth: '1px',
-      width: '60vw',
-      height: '5vh',
-      backgroundColor: 'transparent',
+      // fontFamily: 'Courier',
+      
+     
+      width: '80vw',
+        maxHeight: '10vh',
 
-      color: 'grey',
+      // backgroundColor: 'transparent',
 
-      // flexWrap: 'wrap',
+      
 
+     
       margin: '5px',
     },
     chatContainer: {
       display: 'flex',
       backgroundColor: 'white',
-      maxHeight: '73vh',
-      maxWidth: '90vw',
-      height: '75vh',
-      width: '90vw',
+      maxHeight: '75vh',
+      
+      height: '90vh',
+      width: '100vw',
 
       flexDirection: 'column',
       overflowY: 'scroll',
@@ -121,20 +128,36 @@ const ChatScreen = e => {
   const [userInput, setUserInput] = useState<string>('')
   const classes = useStyles()
 
-  const [Greetings, setGreetings] = useState<item[]>([])
+  const [prevLogs, setPrevLogs] = useState<string[]>([])
 
   const [currInput, setCurrInput] = useState('')
   const [RECEIVED_MSG, setRECEIVED_MSG] = useState<any>({})
-
+useEffect(() => {
+  const getPrevSystemLogs = async () => {
+  }
+  const getPrevUserLogs = async () => {
+  }
+  // const getPrevLogs = async () => {
+  //   const doc_ref = doc(db, 'Users', auth.currentUser.uid)
+  //   const docSnap = await getDocFromCache(doc_ref)
+  //   const data = docSnap.data()
+  //   const prevLogs = data.info.ChatLogs.User
+  //   setPrevLogs(prevLogs)
+  // }
+  // getPrevLogs()
+},[])
   useEffect(() => {
     //RECEIVED_MSG.msg is the path to get a message from a python backend JSON response
     if (RECEIVED_MSG.msg != undefined && RECEIVED_MSG.msg != null && RECEIVED_MSG.msg != '') {
       //When the value of RECEIVED_MSG is updated, the message is updated to cloud firestore db and is displayed on left side of chat screen
      
       const date = new Date().valueOf()
-      const doc_ref = doc(db, 'Users', auth.currentUser.uid)
+      const doc_ref = doc(db, 'ChatLogs', auth.currentUser.uid)
       updateDoc(doc_ref, {
-        [`info.ChatLogs.${date}`]: { System: RECEIVED_MSG },
+        [`System.${new Date().valueOf()}`]: {[RECEIVED_MSG.msg]: serverTimestamp()},
+        
+         
+        
       })
       const TEXT_ELEMENT = document.createElement('div')
       TEXT_ELEMENT.className += classes.chatBotBubble
@@ -192,10 +215,10 @@ const ChatScreen = e => {
         }
         const POST_MSG_TO_DB = async () => {
           const date = new Date().valueOf()
-          const doc_ref = doc(db, 'Users', auth.currentUser.uid)
-          // await updateDoc(doc_ref, {
-          //   [`info.ChatLogs.${date}`]: { User: currInput },
-          // })
+          const doc_ref = doc(db, 'ChatLogs', auth.currentUser.uid)
+          await updateDoc(doc_ref, {
+            [`User.${new Date().valueOf()}`]: {[currInput]: serverTimestamp()}
+          })
         }
 
         const [POST_MSG_TO_API_CALLBACK, POST_MSG_TO_DB_CALLBACK] = await Promise.allSettled([
@@ -218,42 +241,60 @@ const ChatScreen = e => {
     <div style={{ overflow: 'scroll' }}>
       <div className={classes.chatContainer} id="ChatContainer"></div>
       <div className={classes.inputBarContainer}>
-        <input
-          className={classes.inputBar}
-          value={currInput}
-          autoCapitalize="none"
-          autoCorrect="false"
-          autoComplete="off"
-          onChange={e => {
-            setCurrInput(e.target.value)
-          }}
-          onKeyDown={e => {
-            if (e.key === 'Enter' && currInput.length > 0) {
-              updateTextFieldUser()
-            }
-          }}
-          placeholder="Message"
-        ></input>
-        <button
+        <AppBar
+          position="static"
+          color="secondary"
           style={{
-            backgroundColor: 'transparent',
-            borderColor: 'transparent',
-            position: 'relative',
+            display: 'flex',
+            flexDirection: 'row',
+            height: '13vh',
+            opacity: '100%',
+            borderBottomColor: 'white',
+            borderBottomWidth: '8px',
+            borderBottomStyle: 'solid',
           }}
-          onClick={updateTextFieldUser}
         >
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/2343/2343605.png"
-            style={{
-              position: 'relative',
-              color: 'black',
-              backgroundColor: 'transparent',
-              height: '40px',
-              width: '40px',
-              top: '10px',
+          <FilledInput
+            multiline
+            disableUnderline
+            className={classes.inputBar}
+            value={currInput}
+            autoCapitalize="none"
+            autoCorrect="false"
+            autoComplete="off"
+            onChange={e => {
+              setCurrInput(e.target.value)
             }}
+            inputProps={{ sx: { color: 'white' } }}
+            onKeyDown={e => {
+              if (e.key === 'Enter' && currInput.length > 0) {
+                updateTextFieldUser()
+              }
+            }}
+            placeholder="Message"
           />
-        </button>
+          <button
+            style={{
+              display: 'flex',
+
+              marginTop: '3vh',
+
+              backgroundColor: 'transparent',
+              borderColor: 'transparent',
+            }}
+            onClick={updateTextFieldUser}
+          >
+            <CloudUploadIcon
+              style={{
+                position: 'relative',
+                color: 'white',
+
+                height: '40px',
+                width: '40px',
+              }}
+            />
+          </button>
+        </AppBar>
       </div>
     </div>
   )

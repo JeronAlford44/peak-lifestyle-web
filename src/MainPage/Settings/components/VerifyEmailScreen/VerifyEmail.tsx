@@ -29,20 +29,21 @@ const VerifyEmailScreen = () => {
       {!auth.currentUser.emailVerified ? (
         <div
           onClick={() => {
-            {
+            
               console.log(auth.currentUser)
-            }
+            
 
             sendEmailVerification(auth.currentUser)
               .then(() => {
                 
                 window.localStorage.setItem('emailForSignIn', auth.currentUser.email)
                 setEmailVerified(true)
+                alert("Verification Email Sent, Please check your inbox and spam folders")
                 // ...
               })
               .catch(error => {
-                const errorCode = error.code
-                const errorMessage = error.message
+                const errorCode = alert(`Error: ${error.code}, Please try again later`)
+                const errorMessage = alert(error.message)
                 // ...
               })
           }}

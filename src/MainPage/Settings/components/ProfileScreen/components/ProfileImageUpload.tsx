@@ -1,11 +1,17 @@
-import { useContext, useState } from 'react'
+import { useContext, useRef, useState } from 'react'
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage'
 import { app, auth, dbh } from '../../../../../firebaseConfig'
 import { UserProfileContext } from '../../../../../Providers/Context/UserProfileContext'
 import { doc, updateDoc } from 'firebase/firestore'
+import { Button } from '@material-ui/core'
+import BackupIcon from '@mui/icons-material/Backup'
 
 const ProfileImageUpload = () => {
   const storage = getStorage(app)
+  const hiddenFileInput = useRef(null)
+  const handleClick = () => {
+    hiddenFileInput.current.click()
+  }
 
 
   const [imageFile, setImageFile] = useState<File | null>(null)
@@ -21,10 +27,7 @@ const ProfileImageUpload = () => {
           console.log('File upload successful', snapshot)
           getDownloadURL(snapshot.ref)
             .then(async (url)=> {
-                const userDocRef = doc(dbh, 'Users', auth.currentUser.uid)
-                const userDocSnap =  await updateDoc(userDocRef, {
-                    ProfileImgUrl: url,
-                })
+                
               toggleItemState('ProfileImgUrl', url)
               console.log(userData)
             })
@@ -40,13 +43,14 @@ const ProfileImageUpload = () => {
 
   return (
     <div>
-      
+      <Button variant="outlined" startIcon={<BackupIcon />} onClick={handleClick}>
+        UPLOAD
+      </Button>
       <input
-        style={{ color: 'black' }}
-        placeholder="Upload Image Here"
+        style={{ display: 'none', }}
         type="file"
+        ref={hiddenFileInput}
         onChange={handleFileSelected}
-        
       />
     </div>
   )

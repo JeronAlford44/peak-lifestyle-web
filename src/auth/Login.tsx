@@ -1,4 +1,4 @@
-import { Button, makeStyles } from '@material-ui/core'
+import { Button, TextField, makeStyles } from '@material-ui/core'
 import { useContext, useState } from 'react'
 import { auth, dbh } from '../firebaseConfig'
 import {
@@ -13,8 +13,8 @@ import { Outlet, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import { UserProfileContext } from '../Providers/Context/UserProfileContext'
 import { doc, getDoc } from 'firebase/firestore'
-
-
+import UpdateLastSignIn from '../MainPage/Progress/components/LastLogin'
+import { StylesContext } from '../Providers/Context/StylesContext'
 
 // createStyles (old) vs makeStyles (new)
 // https://smartdevpreneur.com/material-ui-makestyles-usestyles-createstyles-and-withstyles-explained/
@@ -32,10 +32,11 @@ const useStyles = makeStyles(
     },
     ButtonsContainer: {
       display: 'flex',
-      flexDirection: 'row',
-      position: 'absolute',
+      flexDirection: 'column',
+      
       bottom: 100,
       alignItems: 'center',
+      
     },
     imageSize: {
       height: '20px',
@@ -54,19 +55,29 @@ const useStyles = makeStyles(
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
+      marginBottom: '5vh',
     },
     inputBar: {
-      // backgroundColor: 'black',
+      backgroundColor: 'whitesmoke',
 
       // borderBottomWidth: '5px',
       marginTop: 5,
-      padding: '20px',
-      borderColor: '',
+
+      borderColor: 'black',
+
+      borderStyle: 'solid',
+      display: 'flex',
+      flexWrap: 'wrap',
     },
     input: {
+      // borderColor: 'white',
+
+      // borderWidth: '1px',
+      // borderStyle: 'solid',
+      color: 'white',
+
+      backgroundColor: 'transparent',
       borderColor: 'transparent',
-      borderBottomColor: 'black',
-      borderWidth: '1px',
     },
     registerButton: {
       backgroundColor: 'grey',
@@ -93,27 +104,27 @@ const useStyles = makeStyles(
 const LoginScreen = () => {
   const navigate = useNavigate()
   const { userData, toggleItemState } = useContext(UserProfileContext)
+  const { themeOptions, isLightMode, globalStyles, toggleLightMode } = useContext(StylesContext)
+  const style = globalStyles()
   const [user, setUser] = useState({
     email: '',
     password: '',
   })
 
   const handleLogin = async () => {
-    try { 
+    try {
+      await setPersistence(auth, browserLocalPersistence).then(async () => {
+        return await signInWithEmailAndPassword(auth, user.email, user.password)
+      })
+      toggleItemState('LastSignIn', new Date())
 
-     
-      await setPersistence(auth, browserLocalPersistence).then(async () => {return await signInWithEmailAndPassword(auth, user.email, user.password)})
-      
-     
       const userDocRef = doc(dbh, 'Users', auth.currentUser.uid)
       const userDocSnap = await getDoc(userDocRef)
-    
+
       if (userDocSnap.exists()) {
         toggleItemState('All', userDocSnap.data() as object)
-        
       }
       navigate('/progress')
-      
     } catch (error) {
       alert(error.message)
     }
@@ -125,15 +136,17 @@ const LoginScreen = () => {
     ['email', 'email address'],
     ['password', 'password'],
   ]
-  
 
   return (
-    <div className={classes.root}>
+    <div className={style.authContainer}>
       <div className={classes.inputContainer}>
         {elements.map((component: object, idx) => {
           return (
             <div key={idx} className={classes.inputBar}>
-              <input
+              <TextField
+                color="primary"
+                variant="filled"
+                label={`${component[1]}`}
                 className={classes.input}
                 type={`${component[0]}`}
                 placeholder={`${component[1]}`}
@@ -153,35 +166,17 @@ const LoginScreen = () => {
           )
         })}
       </div>
-
-      <Button
-        className={classes.loginButton}
-        onClick={() => {
-          handleLogin()
-        }}
-      >
-        Login
-      </Button>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <div
-          style={{
-            fontSize: '15px',
-            display: 'inline',
-            flexWrap: 'wrap',
-            width: '60vw',
-            color: 'white',
+      <div className={classes.ButtonsContainer}>
+        <Button
+          className={style.authButtons}
+          onClick={() => {
+            handleLogin()
           }}
         >
-          Haven't signed up??
-        </div>
-        <Button className={classes.registerButton} href="/auth/Register">
+          Login
+        </Button>
+<div style={{color: 'white', fontSize: '16px'}}>Need to Sign Up?</div>
+        <Button className={style.authButtons} href="/auth/Register">
           Create Account
         </Button>
       </div>
