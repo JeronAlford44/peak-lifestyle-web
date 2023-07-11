@@ -54,7 +54,7 @@ const UserProfileContextProvider = (props: { children: React.ReactElement | any 
 
   const toggleItemState = (
     item: string,
-    newValue: Number | string | UserDataType | object | Date
+    newValue: any
   ): void => {
     const Value = newValue || null
     try {
@@ -79,7 +79,7 @@ const UserProfileContextProvider = (props: { children: React.ReactElement | any 
           })
         }
       }
-      console.log('All', userData)
+      // console.log('All', userData)
     } catch (err) {
      alert(err)
     }

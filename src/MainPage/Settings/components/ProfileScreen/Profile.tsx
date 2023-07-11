@@ -9,10 +9,15 @@ const useStyles = makeStyles(theme => ({
   profileImg: {
     display: 'flex',
     borderRadius: '50%',
-    
     width: '110px',
     height: '110px',
-    position: 'relative',
+  },
+  imgUploadContainer: {
+    display: 'flex',
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
+    
+    flexDirection: 'column',
   },
 }))
 
@@ -27,10 +32,16 @@ export default function ProfileScreen(){
     return (
       <div>
         {/* <div>Profile</div> */}
-        <div>
-          <Avatar alt="Profile Image" src={userData.ProfileImgUrl} style={{ width: 112, height: 112 }} />
+        <div className={classes.imgUploadContainer}>
+          <div >
+            <Avatar
+              alt="Profile Image"
+              src={userData.ProfileImgUrl}
+              className={classes.profileImg}
+            />
+          </div>
+          <ProfileImageUpload />
         </div>
-        <ProfileImageUpload />
       </div>
     )
 }

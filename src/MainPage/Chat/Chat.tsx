@@ -139,10 +139,10 @@ useEffect(() => {
       const docSnap = await getDoc(doc_ref)
       if (docSnap.exists) {
       const data = docSnap.data() as Object
-      console.log(data)
-      console.log(Object.keys(data).sort())
+      // console.log(data)
+      // console.log(Object.keys(data).sort())
       Object.keys(data).sort().forEach((log: any) => {
-console.log(data[log])
+// console.log(data[log])
 if (Object.keys(data[log])[0] == 'User') {
   const TEXT_ELEMENT = document.createElement('div')
   TEXT_ELEMENT.className += classes.chatUserBubble

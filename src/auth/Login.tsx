@@ -123,6 +123,10 @@ const LoginScreen = () => {
 
       if (userDocSnap.exists()) {
         toggleItemState('All', userDocSnap.data() as object)
+        console.log(userDocSnap.data())
+      }
+      else {
+        console.log('No such document!')
       }
       navigate('/progress')
     } catch (error) {

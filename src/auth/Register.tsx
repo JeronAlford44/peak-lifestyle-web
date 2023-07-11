@@ -32,8 +32,7 @@ const useStyles = makeStyles(
     ButtonsContainer: {
       display: 'flex',
       flexDirection: 'column',
-     
-  
+
       alignItems: 'center',
     },
     imageSize: {
@@ -53,7 +52,7 @@ const useStyles = makeStyles(
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
-      marginBottom: '5vh'
+      marginBottom: '5vh',
     },
     inputBar: {
       backgroundColor: 'whitesmoke',
@@ -61,7 +60,7 @@ const useStyles = makeStyles(
       // borderBottomWidth: '5px',
       marginTop: 5,
 
-      borderColor: 'black',
+      borderColor: 'whitesmoke',
 
       borderStyle: 'solid',
       display: 'flex',
@@ -130,7 +129,7 @@ const RegisterScreen = () => {
 
         await createUserWithEmailAndPassword(auth, user.email, user.password)
           .then(userCredentials => {
-            const newUser = userCredentials.user
+            // const newUser = userCredentials.user
 
             updateProfile(auth.currentUser, {
               displayName: user.name,

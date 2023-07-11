@@ -63,7 +63,7 @@ const useStyles = makeStyles(
     logoText: {
       '-webkit-text-stroke': '2px #FADCD9',
   '-webkit-text-fill-color': '#F8AFA6',
-  fontSize: '64px',
+  fontSize: '52px',
   
   alignSelf: 'center',
   
