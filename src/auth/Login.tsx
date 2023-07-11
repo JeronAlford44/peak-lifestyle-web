@@ -63,7 +63,7 @@ const useStyles = makeStyles(
       // borderBottomWidth: '5px',
       marginTop: 5,
 
-      borderColor: 'black',
+      borderColor: 'whitesmoke',
 
       borderStyle: 'solid',
       display: 'flex',

@@ -1,3 +1,3 @@
 export default function DisplayScreen(){
-    return <div> Display options not available at this moment...</div>
+    return <div style ={{color: 'black'}}> Display options not available at this moment...</div>
 }

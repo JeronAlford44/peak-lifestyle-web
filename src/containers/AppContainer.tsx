@@ -1,5 +1,5 @@
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { AppBar, makeStyles } from '@material-ui/core'
+import { AppBar, Box, makeStyles } from '@material-ui/core'
 import { BottomNavigation, BottomNavigationAction } from '@material-ui/core'
 import HomeIcon from '@mui/icons-material/Home'
 import ChatIcon from '@mui/icons-material/Chat'
@@ -10,6 +10,7 @@ import { auth, dbh } from '../firebaseConfig'
 import { UserProfileContext } from '../Providers/Context/UserProfileContext'
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore'
 import { StylesContext } from '../Providers/Context/StylesContext'
+import { onAuthStateChanged } from 'firebase/auth'
 
 // createStyles (old) vs makeStyles (new)
 // https://smartdevpreneur.com/material-ui-makestyles-usestyles-createstyles-and-withstyles-explained/
@@ -22,6 +23,7 @@ const useStyles = makeStyles(
       // justifyContent: 'center',
       // alignItems: 'center',
       margin: theme.spacing(3),
+      backgroundColor: 'black',
     },
     nav: {
       position: 'absolute',
@@ -65,10 +67,12 @@ const AppContainer = (props: any) => {
   }
   React.useEffect(() => {
     if (auth.currentUser == null) {
+      
       alert('You have been signed out. Please log in again to continue')
       navigate('/auth/login')
+      window.location.reload()
     }
-  }, [handlePathName()])
+  }, [onAuthStateChanged])
 
   React.useEffect(() => {
     const userDocRef = doc(dbh, 'Users', auth.currentUser.uid)
@@ -78,23 +82,23 @@ const AppContainer = (props: any) => {
   }, [userData])
 
   return (
-    <div className={style.root}>
-      <div
+    <div style={{color:'white'}}>
+      <AppBar
+      color='secondary'
         style={{
-          borderTopColor: 'transparent',
-          borderLeftColor: 'transparent',
-          borderRightColor: 'transparent',
-          borderBottomColor: 'grey !important',
+          
+          borderBottomColor: 'white !important',
           borderStyle: 'solid',
-          marginBottom: '2vh',
-          color: 'grey',
+          marginBottom: '1vh',
+          padding: '1vh',
+          color: 'White',
 
           textAlign: 'center',
           // background: 'linear-gradient(90deg, #B2BEB5 30%, #A9A9A9 90%)',
         }}
       >
         {handlePathName()}
-      </div>
+      </AppBar>
 
       <Outlet />
       <AppBar position="fixed" color="secondary" className={classes.nav}>

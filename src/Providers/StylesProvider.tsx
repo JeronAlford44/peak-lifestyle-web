@@ -5,7 +5,9 @@ import StylesContextProvider from './Context/StylesContext'
 export default function StylesProvider() {
   return (
     <StylesContextProvider>
-      <Outlet />
+      
+        <Outlet />
+      
     </StylesContextProvider>
   )
 }

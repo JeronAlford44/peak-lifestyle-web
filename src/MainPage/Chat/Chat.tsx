@@ -1,7 +1,7 @@
 import { AppBar, TextField, makeStyles } from '@material-ui/core'
 import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
-import { collection, doc, getDocFromCache, getDocs, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore'
+import { collection, doc, getDoc, getDocFromCache, getDocs, orderBy, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore'
 
 import { app, auth, dbh } from '../../firebaseConfig'
 import { getFirestore } from 'firebase/firestore'
@@ -23,8 +23,8 @@ const useStyles = makeStyles(
       margin: theme.spacing(3),
       backgroundColor: '#680747',
       zIndex: 1,
-      width: '95vw',
-      height: '90vh',
+      width: '100vw',
+      height: '100vh',
     },
     ButtonsContainer: {
       display: 'flex',
@@ -77,11 +77,12 @@ const useStyles = makeStyles(
       margin: '5px',
     },
     chatContainer: {
+      marginTop: '6vh',
       display: 'flex',
       backgroundColor: 'white',
       maxHeight: '75vh',
       
-      height: '90vh',
+      height: '100vh',
       width: '100vw',
 
       flexDirection: 'column',
@@ -129,23 +130,69 @@ const ChatScreen = e => {
   const classes = useStyles()
 
   const [prevLogs, setPrevLogs] = useState<string[]>([])
-
+const [prevUserLogs, setPrevUserLogs] = useState<string[]>([])
   const [currInput, setCurrInput] = useState('')
   const [RECEIVED_MSG, setRECEIVED_MSG] = useState<any>({})
 useEffect(() => {
-  const getPrevSystemLogs = async () => {
+  const getPrevLogs = async () => {
+    const doc_ref = doc(db, 'ChatLogs', auth.currentUser.uid)
+      const docSnap = await getDoc(doc_ref)
+      if (docSnap.exists) {
+      const data = docSnap.data() as Object
+      console.log(data)
+      console.log(Object.keys(data).sort())
+      Object.keys(data).sort().forEach((log: any) => {
+console.log(data[log])
+if (Object.keys(data[log])[0] == 'User') {
+  const TEXT_ELEMENT = document.createElement('div')
+  TEXT_ELEMENT.className += classes.chatUserBubble
+  const node = document.createTextNode(data[log].User)
+  TEXT_ELEMENT.appendChild(node)
+
+  const element = document.getElementById('ChatContainer')
+  element.appendChild(TEXT_ELEMENT)
+}
+else if (Object.keys(data[log])[0] == 'System') {
+  const TEXT_ELEMENT = document.createElement('div')
+  TEXT_ELEMENT.className += classes.chatBotBubble
+  const node = document.createTextNode(data[log].System)
+  TEXT_ELEMENT.appendChild(node)
+
+  const element = document.getElementById('ChatContainer')
+  element.appendChild(TEXT_ELEMENT)
+}
+// setPrevLogs((prevLogs: string[]) => [...prevLogs, data[log].value()])
+      })
+        
+     
+      }
+    
+
+    
   }
-  const getPrevUserLogs = async () => {
-  }
-  // const getPrevLogs = async () => {
-  //   const doc_ref = doc(db, 'Users', auth.currentUser.uid)
-  //   const docSnap = await getDocFromCache(doc_ref)
-  //   const data = docSnap.data()
-  //   const prevLogs = data.info.ChatLogs.User
-  //   setPrevLogs(prevLogs)
+  // const getPrevUserLogs = async () => {
+  //    const doc_ref = doc(db, 'ChatLogs', auth.currentUser.uid)
+  //    const docSnap = await getDoc(doc_ref)
+  //    if (docSnap.exists) {
+  //      const data = docSnap.data()
+  //      const prevLogs = data.User
+  //      console.log(prevLogs)
+  //     //  setPrevUserLogs(prevLogs)
+  //    }
+
   // }
-  // getPrevLogs()
+  // // const getPrevLogs = async () => {
+  // //   const doc_ref = doc(db, 'Users', auth.currentUser.uid)
+  // //   const docSnap = await getDocFromCache(doc_ref)
+  // //   const data = docSnap.data()
+  // //   const prevLogs = data.info.ChatLogs.User
+  // //   setPrevLogs(prevLogs)
+  // // }
+  getPrevLogs()
+  
+
 },[])
+
   useEffect(() => {
     //RECEIVED_MSG.msg is the path to get a message from a python backend JSON response
     if (RECEIVED_MSG.msg != undefined && RECEIVED_MSG.msg != null && RECEIVED_MSG.msg != '') {
@@ -154,7 +201,7 @@ useEffect(() => {
       const date = new Date().valueOf()
       const doc_ref = doc(db, 'ChatLogs', auth.currentUser.uid)
       updateDoc(doc_ref, {
-        [`System.${new Date().valueOf()}`]: {[RECEIVED_MSG.msg]: serverTimestamp()},
+        [`${new Date().valueOf()}`]: {System: RECEIVED_MSG.msg},
         
          
         
@@ -217,7 +264,7 @@ useEffect(() => {
           const date = new Date().valueOf()
           const doc_ref = doc(db, 'ChatLogs', auth.currentUser.uid)
           await updateDoc(doc_ref, {
-            [`User.${new Date().valueOf()}`]: {[currInput]: serverTimestamp()}
+            [`${new Date().valueOf()}`]: {User: currInput}
           })
         }
 
@@ -238,7 +285,7 @@ useEffect(() => {
       .catch(error => alert(error))
   }
   return (
-    <div style={{ overflow: 'scroll' }}>
+    <div style={{position: 'relative',overflow: 'scroll', minHeight: '100vh' }}>
       <div className={classes.chatContainer} id="ChatContainer"></div>
       <div className={classes.inputBarContainer}>
         <AppBar

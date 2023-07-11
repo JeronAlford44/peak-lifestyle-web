@@ -34,7 +34,7 @@ const useStyles = makeStyles(
       flex: 1,
       flexDirection: 'column',
       //backgroundColor: '#680747',
-      backgroundColor: '#aa00ff',
+      backgroundColor: 'white',
       zIndex: 1,
       width: '100vw',
       height: '100vh',
@@ -83,6 +83,7 @@ const App = props => {
   const classes = useStyles()
   const lightTheme = createTheme({
     palette: {
+      
       primary: {
         main: '#ab47bc',
       },

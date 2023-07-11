@@ -56,10 +56,11 @@ const useStyles = makeStyles(
       borderBottomStyle: 'solid',
     },
     componentContainer: {
+      marginTop: '5vh',
       display: 'flex',
       flexDirection: 'column',
       width: '100vw',
-      height: '90vh',
+      height: '100vh',
       backgroundColor: 'white',
       overflow: 'scroll',
     },

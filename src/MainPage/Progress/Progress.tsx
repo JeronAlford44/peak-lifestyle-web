@@ -30,6 +30,7 @@ const useStyles = makeStyles(
       display: 'flex',
       // position: 'absolute',
       flexDirection: 'column',
+      marginTop: '6vh',
       width: '100vw',
       height: '100vh',
       backgroundColor: 'white',
@@ -47,13 +48,12 @@ const ProgressScreen = () => {
   const classes = useStyles()
   return (
     <div className={classes.root}>
-    
       <div className={classes.componentContainer}>
-        <div style = {{color: 'black'}}>
+        <div style={{ color: 'black' }}>
           Welcome {auth.currentUser.displayName ? auth.currentUser.displayName.split(' ')[0] : null}
           !
         </div>
-        <div>Sign In Streak: {UpdateSignInStreak()}</div>
+        <div style={{ color: 'black' }}>Sign In Streak: {UpdateSignInStreak()}</div>
       </div>
     </div>
   )

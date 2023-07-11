@@ -18,6 +18,8 @@ const StylesContextProvider = (props: { children: React.ReactElement | any }) =>
     root: { backgroundColor: isLightMode ? '#aa00ff' : 'white' },
     authContainer: {
       backgroundColor: isLightMode ? '#aa00ff' : 'white',
+      height: '100vh',
+      
     },
     authButtons: {
       marginBottom: '2vh',

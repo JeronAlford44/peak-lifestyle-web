@@ -147,7 +147,7 @@ const RegisterScreen = () => {
               // )
 
               await setDoc(doc(dbh, 'Users', auth.currentUser.uid), userData)
-              await setDoc(doc(dbh, 'ChatLogs', auth.currentUser.uid), {System: null, User: null})
+              await setDoc(doc(dbh, 'ChatLogs', auth.currentUser.uid), {})
             })
           })
           .then(() => {
